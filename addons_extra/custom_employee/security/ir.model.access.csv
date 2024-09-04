@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_team,access_hr_team,model_hr_team,,1,1,1,1
+access_hr_team_members,access_hr_team_members,model_hr_team_members,,1,1,1,1
+access_hr_target,access_hr_target,model_hr_target,,1,1,1,1

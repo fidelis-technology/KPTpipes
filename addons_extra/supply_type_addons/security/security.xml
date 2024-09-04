@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<odoo>
+    <data>
+        <record id="group_po_user" model="res.groups">
+            <field name="name">PO User</field>
+            <field name="category_id" ref="base.module_category_inventory_purchase"/>
+        </record>
+
+        <record id="group_po_manager" model="res.groups">
+            <field name="name">PO Manager</field>
+            <field name="category_id" ref="base.module_category_inventory_purchase"/>
+        </record>
+
+        <!-- Record rule for Purchase Users to only see allowed suppliers and their own contact -->
+        <record id="purchase_supplier_rule" model="ir.rule">
+            <field name="name">Purchase User: Only Allowed Suppliers and Own Contact</field>
+            <field name="model_id" ref="base.model_res_partner"/>
+            <field name="global" eval="False"/>
+            <field name="groups" eval="[(4, ref('supply_type_addons.group_po_user')), (4, ref('supply_type_addons.group_po_manager'))]"/>
+            <field name="domain_force">['|', ('supply_type', 'in', user.supply_type_ids.ids), ('id', '=', user.partner_id.id)]</field>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="0"/>
+            <field name="perm_create" eval="0"/>
+            <field name="perm_unlink" eval="0"/>
+        </record>
+
+        <!-- Record rule for Administrators to have full access -->
+        <record id="admin_full_access_rule" model="ir.rule">
+            <field name="name">Administrator: Full Access to Partners</field>
+            <field name="model_id" ref="base.model_res_partner"/>
+            <field name="global" eval="False"/>
+            <field name="groups" eval="[(4, ref('base.group_system'))]"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="1"/>
+        </record>
+
+        <!-- Record rule for Administrators to have full access -->
+        <record id="remove_read_access_rule" model="ir.rule">
+            <field name="name">User: Full Access to Partners</field>
+            <field name="model_id" ref="base.model_res_partner"/>
+            <field name="global" eval="False"/>
+            <field name="groups"
+                   eval="[(4, ref('supply_type_addons.group_po_user')), (4, ref('supply_type_addons.group_po_manager'))]"/>
+            <field name="domain_force">[('user_id', '!=', user.id)]</field>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="1"/>
+        </record>
+
+        <record id="allowed_supplier_rule" model="ir.rule">
+            <field name="name">Allowed Suppliers</field>
+            <field name="model_id" ref="model_res_partner"/>
+            <field name="domain_force">['|',('supply_type','=',False),('supply_type', 'in', user.supply_type_ids.ids)]
+            </field>
+        </record>
+
+    </data>
+</odoo>

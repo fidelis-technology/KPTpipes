@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_users_inherit_supplier_types" model="ir.ui.view">
+        <field name="name">inherit.partners</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page name="supplier_type" string="Supplier Type">
+                    <group>
+                        <field name="supplier_type_ids" widget="many2many_tags" options="{'no_create': True}"/>
+                    </group>
+                </page>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>
