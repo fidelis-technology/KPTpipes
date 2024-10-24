@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<odoo>
+    <data>
+        <record id="onboarding_mail_template" model="mail.template">
+            <field name="name">Onboarding Mail Template</field>
+            <field name="model_id" ref="fidelis_onboarding.model_send_mail_candidate"/>
+            <field name="subject">Candidate Onboard Mail</field>
+            <field name="email_from">{{ user.email }}</field>
+            <field name="partner_to">{{ object.email }}</field>
+            <field name="description">Candidate Onboard Registration Mail Link</field>
+            <field name="body_html" type="html">
+                <div>
+                    <p>
+                        Dear Candidate,
+                        <br/>
+                        <br/>
+                        Here is the attached Candidate Form Link. Please click the link and fill out all the details
+                        after click
+                        the submit button.
+                        <br/>
+                        <div style="margin: 16px 0px 16px 0px;">
+                            <a href="http://fidelis:8069/webform"
+                               style="background-color: #875A7B; padding: 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;">
+                                Candidate Registration
+                            </a>
+                        </div>
+                        <div>
+                            <p>
+                                DESCRIPTION:-<br/>
+                                1.AADHAR CARD (Document need to upload) <br/>
+                                2.PAN CARD (Document need to upload)<br/>
+                                3.PAYSLIPS LAST 3 months (Document need to upload)<br/>
+                                4.BANK STATEMENT 6 Months (Document need to upload) <br/>
+                                5.EDUCATIONAL HIGHEST (Document need to upload) <br/>
+                                6.Salary revision letter recent company (Document need to upload) <br/>
+                                7.Experience letter of all the company as per resume (Document need to upload) <br/>
+                                8.UPDATED RESUME (Document need to upload) <br/>
+                                9.EMPLOYEE PHOTO (Document need to upload) <br/>
+                            </p>
+                        </div>
+                        <br/>
+                       Thank you
+                        <br/>
+                    </p>
+                </div>
+            </field>
+        </record>
+    </data>
+</odoo>

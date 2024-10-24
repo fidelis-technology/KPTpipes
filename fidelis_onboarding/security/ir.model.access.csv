@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_onboarding,onboarding,model_onboarding,base.group_user,1,1,1,1
+access_onboarding_mail_send,onboarding.mail.send,model_onboarding_mail_send,base.group_user,1,1,1,1
+access_send_mail_candidate,send.mail.candidate,model_send_mail_candidate,base.group_user,1,1,1,1

@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Candidate Web Menu -->
+    <record id="website_candidate_menu" model="website.menu">
+        <field name="name">Candidate</field>
+        <field name="url">/webform</field>
+        <field name="parent_id" ref="website.main_menu"/>
+        <field name="sequence" type="int">90</field>
+    </record>
+
+    <!-- Candidate Web Form Template -->
+    <template id="web_form_template" name="Create Candidate">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure">
+                <section class="s_website_form">
+                    <div class="container">
+                        <form action="/webform/submit" enctype="multipart/form-data" class="o_mark_required"
+                              method="POST">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <div class="s_website_form_rows row">
+
+                                <!-- Candidate Name -->
+                                <div class="col-5 mb-0 py-2 s_website_form_field s_website_form_custom">
+                                    <label for="candidate_name">Name</label>
+                                    <input id="candidate_name" type="text" class="form-control"
+                                           name="candidate_name"
+                                           required="1"
+                                           placeholder="Enter the Name *"
+                                    />
+                                </div>
+
+                                <!-- Email -->
+                                <div class="col-5 mb-0 py-2 s_website_form_field s_website_form_custom">
+                                    <label for="email">Mail</label>
+                                    <input id="email" type="email" class="form-control" name="email"
+                                           required="1"
+                                           placeholder="Enter the Email *"
+                                    />
+                                </div>
+
+                                <!-- Contact Number -->
+                                <div class="col-5 mb-0 py-2 s_website_form_field s_website_form_custom">
+                                    <label for="contact_number">Mobile No(Whatsapp No)</label>
+                                    <input id="contact_number" type="text" class="form-control"
+                                           name="contact_number"
+                                           required="1"
+                                           placeholder="Enter Mobile Number *"
+                                    />
+                                </div>
+
+                                <!-- Date of Birth -->
+                                <div class="form-group col-5">
+                                    <label for="date_of_birth">DOB</label>
+                                    <input id="date_of_birth" type="date" class="form-control"
+                                           name="date_of_birth"
+                                           required="1"
+                                           placeholder="Enter the Date Of Birth *"
+                                    />
+                                </div>
+
+                                <!-- Aadhar Number -->
+                                <div class="form-group col-5">
+                                    <label for="aadhar_no">Aadhar No</label>
+                                    <input id="aadhar_no" type="text" class="form-control" name="aadhar_no"
+                                           required="1"
+                                           placeholder="Enter the Aadhar Number *"
+                                    />
+                                </div>
+
+                                <div class="col-5 mb-0 py-2 s_website_form_field s_website_form_custom"
+                                     data-type="binary" data-name="aadhar_card">
+                                    <label class="form-group col-12" for="recruitment6">
+                                        <span class="s_website_form_label_content">Attach Aadhar</span>
+                                        <input id="aadhar_card" type="file"
+                                               class="form-control s_website_form_input o_aadhar_input"
+                                               name="aadhar_card"/>
+                                    </label>
+                                </div>
+
+                                <!-- PAN Number -->
+                                <div class="form-group col-5">
+                                    <label for="pan_number">PAN Number</label>
+                                    <input id="pan_number" type="text" class="form-control" name="pan_number"
+                                           required="1"
+                                           placeholder="Enter the PAN Number *"
+                                    />
+                                </div>
+
+                                <div class="col-5 mb-0 py-2 s_website_form_field s_website_form_custom"
+                                     data-type="binary" data-name="pan_card">
+                                    <label class="form-group col-12" for="recruitment6">
+                                        <span class="s_website_form_label_content">Attach Pan</span>
+                                        <input id="pan_card" type="file"
+                                               class="form-control s_website_form_input o_pan_input" name="pan_card"/>
+                                    </label>
+                                </div>
+
+
+                                <!-- Present Address -->
+                                <div class="form-group col-5">
+                                    <label for="present_address">Present Address</label>
+                                    <input id="present_address" type="text" class="form-control"
+                                           name="present_address"
+                                           required="1"
+                                           placeholder="Enter the Present Address *"
+                                    />
+                                </div>
+
+                                <!-- Permanent Address -->
+                                <div class="form-group col-5">
+                                    <label for="permanent_address">Permanent Address</label>
+                                    <input id="permanent_address" type="text" class="form-control"
+                                           name="permanent_address"
+                                           required="1"
+                                           placeholder="Enter the Permanent Address *"
+                                    />
+                                </div>
+
+                                <!-- Attachment Fields -->
+
+                                <div class="col-5 mb-0 py-2 s_website_form_field s_website_form_custom"
+                                     data-type="binary" data-name="payslips_last_3_months">
+                                        <label class="form-group col-12" for="recruitment6">
+                                            <span class="s_website_form_label_content">Payslips (Last 3 Months)</span>
+                                            <input id="payslips_last_3_months" type="file"
+                                                   class="form-control s_website_form_input o_payslip_input"
+                                                   name="payslips_last_3_months"/>
+                                        </label>
+                                </div>
+
+                                <div class="col-5 mb-0 py-2 s_website_form_field s_website_form_custom"
+                                     data-type="binary" data-name="bank_statement_6_months">
+                                        <label class="form-group col-12" for="recruitment6">
+                                            <span class="s_website_form_label_content">Bank Statement(Last 6 Months)</span>
+                                            <input id="bank_statement_6_months" type="file"
+                                                   class="form-control s_website_form_input o_bank_statement_input"
+                                                   name="bank_statement_6_months"
+                                                   placeholder="Bank Statement(Last 6 Months)"
+                                            />
+                                        </label>
+                                </div>
+
+                                <div class="col-5 mb-0 py-2 s_website_form_field s_website_form_custom"
+                                     data-type="binary" data-name="educational_highest">
+                                        <label class="form-group col-12" for="recruitment6">
+                                            <span class="s_website_form_label_content">Educational Highest</span>
+                                            <input id="recruitment6" type="file"
+                                                   class="form-control s_website_form_input o_resume_input"
+                                                   name="educational_highest"/>
+                                        </label>
+                                </div>
+
+                                <div class="col-5 mb-0 py-2 s_website_form_field s_website_form_custom"
+                                     data-type="binary" data-name="salary_revision_letter">
+                                         <label class="form-group col-12" for="recruitment6">
+                                            <span class="s_website_form_label_content">Salary Revision Letter</span>
+                                            <input id="recruitment6" type="file"
+                                                   class="form-control s_website_form_input o_resume_input"
+                                                   name="salary_revision_letter"/>
+                                         </label>
+                                </div>
+
+                                <div class="col-5 mb-0 py-2 s_website_form_field s_website_form_custom"
+                                     data-type="binary" data-name="experience_letter">
+                                         <label class="form-group col-12" for="recruitment6">
+                                            <span class="s_website_form_label_content">Experience Letter</span>
+                                            <input id="recruitment6" type="file"
+                                                   class="form-control s_website_form_input o_resume_input"
+                                                   name="experience_letter"/>
+                                         </label>
+                                </div>
+
+                                <div class="col-5 mb-0 py-2 s_website_form_field s_website_form_custom"
+                                     data-type="binary" data-name="updated_resume">
+                                        <label class="form-group col-12" for="recruitment6">
+                                            <span class="s_website_form_label_content">Resume</span>
+                                            <input id="updated_resume" type="file"
+                                                   class="form-control s_website_form_input o_resume_input"
+                                                   name="updated_resume"/>
+                                        </label>
+                                </div>
+
+
+                                <div class="col-5 mb-0 py-2 s_website_form_field s_website_form_custom"
+                                     data-type="binary" data-name="employee_photo">
+                                        <label class="form-group col-12" for="recruitment6">
+                                            <span class="s_website_form_label_content">Photo</span>
+                                            <input id="recruitment6" type="file"
+                                                   class="form-control s_website_form_input o_resume_input"
+                                                   name="employee_photo"/>
+                                        </label>
+                                </div>
+
+                                <!-- Submit Button -->
+                                <div class="form-group col-12 text-center" >
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                </section>
+            </div>
+        </t>
+    </template>
+
+
+    <template id="thank_you_page_template" name="Thank You Page">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure">
+                <section class="s_website_thank_you">
+                    <div class="container">
+                        <div class="alert alert-success">
+                            <h2>Thank You!</h2>
+                            <p>Your submission has been received successfully. We will get back to you soon.</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </t>
+    </template>
+</odoo>

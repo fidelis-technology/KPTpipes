@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<odoo>
+    <record id="onboarding_form_view" model="ir.ui.view">
+        <field name="name">onboarding.form.view</field>
+        <field name="model">onboarding</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <!--                    <button name="action_send_mail" type="object" string="Send Mail" class="oe_highlight"/>-->
+                    <field name="stage" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <!--                            <field name="name"/>-->
+                            <field name="candidate_name"/>
+                            <field name="email" widget="email"/>
+                        </group>
+                        <group>
+                            <field name="created_on"/>
+                            <field name="created_by"/>
+                        </group>
+                        <group string="Contact Details">
+                            <field name="contact_number"/>
+                            <field name="dob"/>
+                            <field name="aadhar_no"/>
+                            <field name="pan_number"/>
+                        </group>
+                        <group string="Address Details">
+                            <field name="present_address"/>
+                            <field name="permanent_address"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Documents" name="candidate_docs">
+                            <group>
+
+                                    <field name="aadhar_card" widget="many2many_binary_preview" readonly="1"/>
+                                    <field name="pan_card" widget="many2many_binary_preview" readonly="1"/>
+                                    <field name="payslips_last_3_months" widget="many2many_binary_preview" readonly="1"/>
+
+
+                                    <field name="bank_statement_6_months" widget="many2many_binary_preview" readonly="1"/>
+                                    <field name="educational_highest" widget="many2many_binary_preview" readonly="1"/>
+                                    <field name="salary_revision_letter" widget="many2many_binary_preview" readonly="1"/>
+
+
+                                    <field name="experience_letter" widget="many2many_binary_preview" readonly="1"/>
+                                    <field name="updated_resume" widget="many2many_binary_preview" readonly="1"/>
+                                    <field name="employee_photo" widget="many2many_binary_preview" readonly="1"/>
+
+                            </group>
+                        </page>
+                        <page string="Recruiter" name="recruiter">
+                            <group>
+                                <group>
+                                    <field name="ctc"/>
+                                    <field name="designation"/>
+                                </group>
+                                <group>
+                                    <field name="candidate_type"/>
+                                    <field name="all_docs_verified"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Finance" name="finance">
+                            <group>
+                                <field name="po_number"/>
+                                <field name="bill_number"/>
+                            </group>
+                        </page>
+                        <page string="HR" name="hr">
+                            <group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="onboarding_tree_view" model="ir.ui.view">
+        <field name="name">onboarding.tree.view</field>
+        <field name="model">onboarding</field>
+        <field name="arch" type="xml">
+            <tree>
+                <!--                <field name="name"/>-->
+                <field name="candidate_name"/>
+                <field name="email" widget="email"/>
+                <field name="created_on"/>
+                <field name="contact_number"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <record id="action_onboarding_form" model="ir.actions.act_window">
+        <field name="name">Candidate Records</field>
+        <field name="res_model">onboarding</field>
+        <field name="view_mode">tree,form,kanban,pivot</field>
+    </record>
+
+    <menuitem id="master_onboarding"
+              name="Onboarding"
+    />
+
+    <menuitem
+            id="onboarding_id"
+            name="Candidate Records"
+            action="action_onboarding_form"
+            parent="master_onboarding"
+            sequence="20"
+    />
+
+</odoo>
