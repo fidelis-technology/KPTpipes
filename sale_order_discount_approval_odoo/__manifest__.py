@@ -3,7 +3,7 @@
     'name': 'Sale Order Discount Approval',
     'version': '17.0.1.0.0',
     'category': 'Sales',
-    'depends': [
+    'depends': ['base',
         'sale_management',
         'sale',
     ],
@@ -13,6 +13,7 @@
         'report/sale_order_template.xml',
         'view/res_users_views.xml',
         'view/sale_order_views.xml',
+        'view/pro_forma_invoice.xml',
 
     ],
     'images': ['static/description/banner.jpg'],
