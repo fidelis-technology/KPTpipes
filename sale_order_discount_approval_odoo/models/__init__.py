@@ -22,3 +22,4 @@
 from . import res_users
 from . import sale_order
 from . import proforma_invoice
+from . import printing_label

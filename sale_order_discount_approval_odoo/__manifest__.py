@@ -14,6 +14,7 @@
         'view/res_users_views.xml',
         'view/sale_order_views.xml',
         'view/pro_forma_invoice.xml',
+        'view/printing_label.xml'
 
     ],
     'images': ['static/description/banner.jpg'],
