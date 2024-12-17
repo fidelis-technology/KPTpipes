@@ -1,5 +1,6 @@
-from odoo import models, api
+from odoo import models, api , fields
 from odoo.osv import expression
+
 
 class ProductTemplate(models.Model):
     _inherit = "product.template"
@@ -21,4 +22,4 @@ class ProductTemplate(models.Model):
 class StockMove(models.Model):
     _inherit = 'stock.move'
 
-    product_price=fields.Float(string="product price")
+    product_price = fields.Float(string="product price")
