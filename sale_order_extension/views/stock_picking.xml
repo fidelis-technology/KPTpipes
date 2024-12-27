@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_picking_form_inherit_sample_sale" model="ir.ui.view">
+        <field name="name">view.picking.form.inherit.sample.sale</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='origin']" position="after">
+                <field name="sample_transfer"/>
+            </xpath>
+            <xpath expr="//page[@name='operations']/field/tree/field[@name='product_uom'][2]" position="after">
+                <field
+                        name="price_unit"
+                        />
+                <field
+                        name="tax_id"
+                        widget="many2many_tags"
+                        options="{'no_create': True}"
+                        />
+                <field name="price_subtotal" string="Tax excl." />
+                <field name="price_total"
+                       string="Tax incl."
+                       />
+            </xpath>
+            <xpath expr="//page[@name='operations']" position="inside">
+                <group name="note_group" col="6" class="mt-2 mt-md-0">
+                    <group colspan="4">
+                        <field colspan="2" name="note" nolabel="1" placeholder="Terms and conditions..."/>
+                    </group>
+                    <group class="oe_subtotal_footer" colspan="2">
+                        <field name="tax_totals" widget="account-tax-totals-field" nolabel="1" colspan="2"
+                               readonly="1"/>
+                    </group>
+                    <div class="clearfix"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+
+</odoo>
