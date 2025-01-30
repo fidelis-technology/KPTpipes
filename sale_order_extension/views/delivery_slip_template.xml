@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <template id="custom_internal_layout_delivery" >
+    <template id="custom_internal_layout_delivery">
         <t t-if="not o" t-set="o" t-value="doc"/>
 
         <t t-if="not company">
@@ -20,171 +20,331 @@
         <div class="header d-flex flex-column">
             <div class="row w-100 align-items-center">
                 <div class="col-3 text-left">
-                    <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 70px;" alt="Logo"/>
+                    <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 70px;"
+                         alt="Logo"/>
                 </div>
                 <div class="col-6 text-center">
-                    <div t-field="company.partner_id.name" class="fw-bold" style="font_weight:600 !important;font-family: sans-serif !important;"/>
+                    <div t-field="company.partner_id.name" class="fw-bold"
+                         style="font_weight:600 !important;font-family: sans-serif !important;"/>
                     <div>
-                        <span t-if="company.partner_id.street" t-field="company.partner_id.street" />
-                        <span t-if="company.partner_id.street2" t-field="company.partner_id.street2" />
+                        <span t-if="company.partner_id.street" t-field="company.partner_id.street"/>
+                        <span t-if="company.partner_id.street2" t-field="company.partner_id.street2"/>
                     </div>
                     <div t-if="company.partner_id.state_id">
-                        <span t-if="company.partner_id.city" t-field="company.partner_id.city" />-
-                        <span t-if="company.partner_id.zip" t-field="company.partner_id.zip" />,
-                        <span  t-field="company.partner_id.state_id.name" />-
-                        <span  t-field="company.partner_id.state_id.code" />,
-                        <span t-if="company.partner_id.country_id" t-field="company.partner_id.country_id.name" />.
+                        <span t-if="company.partner_id.city" t-field="company.partner_id.city"/>-
+                        <span t-if="company.partner_id.zip" t-field="company.partner_id.zip"/>,
+                        <span t-field="company.partner_id.state_id.name"/>-
+                        <span t-field="company.partner_id.state_id.code"/>,
+                        <span t-if="company.partner_id.country_id" t-field="company.partner_id.country_id.name"/>.
                     </div>
-                    <div>GSTIN/UIN : <span  t-field="doc.company_id.vat"/> </div>
-                    <div>CIN : <span  t-field="doc.company_id.company_registry"/> </div>
-                    <div><span t-field="company.partner_id.email"/></div>
+                    <div>GSTIN/UIN :
+                        <span t-field="doc.company_id.vat"/>
+                    </div>
+                    <div>CIN :
+                        <span t-field="doc.company_id.company_registry"/>
+                    </div>
+                    <div>
+                        <span t-field="company.partner_id.email"/>
+                    </div>
                 </div>
                 <div class="col-3 text-end">
                     <div t-if="report_type == 'pdf'" class="text-muted">
-                        Page: <span class="page"/> / <span class="topage"/>
+                        Page:
+                        <span class="page"/>
+                        /
+                        <span class="topage"/>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="article" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
-          <t t-out="0"/>
+        <div class="article" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id"
+             t-att-data-oe-lang="o and o.env.context.get('lang')">
+            <t t-out="0"/>
         </div>
     </template>
 
     <template id="report_delivery_note_document">
-    <t t-call="sale_order_extension.custom_internal_layout_delivery">
-        <t t-set="doc" t-value="o.with_context(lang=o.partner_id.lang)" />
-        <div style="margin: 1% 0%;">
-            <table style="width: 100%; border-collapse: collapse;">
-                <tr>
-                    <td style="width: 80%;padding: 1%;">
-                        <p>Voucher No: <span class="fw-bold" style="font_weight:600 !important;font-family: sans-serif !important;" t-field="doc.name" /></p>
-                        <p>Ref. No./Order No.: </p>
-                    </td>
-                    <td style="width: 20%;padding: 1%;">
-                        <p>Date: <span class="fw-bold" style="font-weight: 600 !important; font-family: sans-serif !important;" t-esc="doc.create_date.strftime('%d-%m-%Y')"/></p>
-                    </td>
-                </tr>
-            </table>
-        </div>
-        <h2 class="mt-4 text-center">
-            <span >Delivery Note</span>
-        </h2>
-        <div style="margin: 1% 0%;">
-            <table style="width: 100%; border-collapse: collapse;">
-                <tr>
-                    <!-- Party Name Section -->
-                    <td style="width: 50%; border: 1px solid black; padding: 1%;">
-                        <div class="fw-bold" style="font_weight:600 !important;font-family: sans-serif !important; text-decoration: underline; margin-bottom:3%;" >Consignee Name</div>
-                        <div t-field="doc.partner_id.commercial_partner_id.name" class="fw-bold" style="font_weight:600 !important;font-family: sans-serif !important;" ></div>
-                        <div t-field="doc.partner_id.commercial_partner_id"
-                        t-options='{"widget": "contact", "fields": ["address", "phone","email"], "no_marker": True, "phone_icons": True}'/>
-                        <div>State : <span  class="fw-bold" style="font-family: sans-serif !important;" t-field="doc.partner_id.commercial_partner_id.state_id.name"/> </div>
-                        <div>GSTIN/UIN : <span  class="fw-bold" style="font-family: sans-serif !important;" t-field="doc.partner_id.commercial_partner_id.vat"/> </div>
-                    </td>
+        <t t-call="sale_order_extension.custom_internal_layout_delivery">
+            <t t-set="doc" t-value="o.with_context(lang=o.partner_id.lang)"/>
+            <div style="margin: 1% 0%;">
+                <table style="width: 100%; ">
+                    <tr>
+                        <td style="width: 80%;padding: 1%;" border="0">
+                            <p>Voucher No:
+                                <span class="fw-bold"
+                                      style="font_weight:600 !important;font-family: sans-serif !important;"
+                                      t-field="doc.name"/>
+                            </p>
+                            <p>Ref. No./Order No.:</p>
+                        </td>
+                        <td style="width: 20%;padding: 1%;">
+                            <p>Date:
+                                <span class="fw-bold"
+                                      style="font-weight: 600 !important; font-family: sans-serif !important;"
+                                      t-esc="doc.scheduled_date.strftime('%d-%m-%Y')"/>
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <h2 class="mt-4 text-center">
+                <span>Delivery Challan</span>
+            </h2>
+            <div style="margin: 1% 0%;">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <tr>
+                        <!-- Party Name Section -->
+                        <td style="width: 50%; border: 1px solid black; padding: 1%;">
+                            <div class="fw-bold"
+                                 style="font_weight:600 !important;font-family: sans-serif !important; text-decoration: underline; margin-bottom:3%;">
+                                Consignee Name
+                            </div>
+                            <div t-field="doc.partner_id.commercial_partner_id.name" class="fw-bold"
+                                 style="font_weight:600 !important;font-family: sans-serif !important;"></div>
+                            <div t-field="doc.partner_id.commercial_partner_id"
+                                 t-options='{"widget": "contact", "fields": ["address", "phone","email"], "no_marker": True, "phone_icons": True}'/>
+                            <div>State :
+                                <span class="fw-bold" style="font-family: sans-serif !important;"
+                                      t-field="doc.partner_id.commercial_partner_id.state_id.name"/>
+                            </div>
+                            <div>GSTIN/UIN :
+                                <span class="fw-bold" style="font-family: sans-serif !important;"
+                                      t-field="doc.partner_id.commercial_partner_id.vat"/>
+                            </div>
+                        </td>
 
-                    <!-- Delivery At Section -->
-                    <td style="width: 50%; border: 1px solid black; padding: 1%;">
-                        <div class="fw-bold" style="font_weight:600 !important;font-family: sans-serif !important; text-decoration: underline; margin-bottom:3%;" >Delivery At</div>
-                        <div t-field="doc.partner_id.name" class="fw-bold" style="font_weight:600 !important;font-family: sans-serif !important;" ></div>
-                        <div t-field="doc.partner_id"
-                        t-options='{"widget": "contact", "fields": ["address", "phone","email"], "no_marker": True, "phone_icons": True}'/>
-                        <div>State : <span  class="fw-bold" style="font-family: sans-serif !important;" t-field="doc.partner_id.state_id.name"/> </div>
-                        <div>GSTIN/UIN : <span  class="fw-bold" style="font-family: sans-serif !important;" t-field="doc.partner_id.vat"/> </div>
-                    </td>
-                </tr>
-            </table>
-        </div>
-        <div class="page">
+                        <!-- Delivery At Section -->
+                        <td style="width: 50%; border: 1px solid black; padding: 1%;">
+                            <div class="fw-bold"
+                                 style="font_weight:600 !important;font-family: sans-serif !important; text-decoration: underline; margin-bottom:3%;">
+                                Delivery At
+                            </div>
+                            <div t-field="doc.partner_id.name" class="fw-bold"
+                                 style="font_weight:600 !important;font-family: sans-serif !important;"></div>
+                            <div t-field="doc.partner_id"
+                                 t-options='{"widget": "contact", "fields": ["address", "phone","email"], "no_marker": True, "phone_icons": True}'/>
+                            <div>State :
+                                <span class="fw-bold" style="font-family: sans-serif !important;"
+                                      t-field="doc.partner_id.state_id.name"/>
+                            </div>
+                            <div>GSTIN/UIN :
+                                <span class="fw-bold" style="font-family: sans-serif !important;"
+                                      t-field="doc.partner_id.vat"/>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="page">
                 <!-- Products Table -->
                 <table class="table table-sm" style="margin: 1% 0%;">
                     <thead>
                         <tr>
-                            <th style="padding: 8px; border: 1px solid black;" >Sl No</th>
-                            <th style="padding: 8px; border: 1px solid black;" >Description of Goods</th>
-                            <th style="padding: 8px; border: 1px solid black;" >HSN/SAC</th>
-                            <th style="padding: 8px; border: 1px solid black;" >Packs</th>
-                            <th style="padding: 8px; border: 1px solid black;" >Quantity</th>
-                            <th style="padding: 8px; border: 1px solid black;" >Unit</th>
-                            <th style="padding: 8px; border: 1px solid black;" >Rate</th>
-                            <th style="padding: 8px; border: 1px solid black;" >Amount</th>
+                            <th style="padding: 8px; border: 1px solid black;">Sl No</th>
+                            <th style="padding: 8px; border: 1px solid black;">Description of Goods</th>
+                            <th style="padding: 8px; border: 1px solid black;">HSN/SAC</th>
+                            <th style="padding: 8px; border: 1px solid black;">Packs</th>
+                            <th style="padding: 8px; border: 1px solid black;">Quantity</th>
+                            <th style="padding: 8px; border: 1px solid black;">Rate</th>
+                            <th style="padding: 8px; border: 1px solid black;">Per</th>
+                            <th style="padding: 8px; border: 1px solid black;">Amount</th>
                         </tr>
                     </thead>
                     <tbody>
                         <t t-set="sequence" t-value="1"/>
                         <t t-foreach="doc.move_ids_without_package" t-as="line">
                             <tr>
-                                <td style="padding: 8px; text-align: center; border: 1px solid black;" ><span t-esc="sequence"/></td>
-                                <td style="padding: 8px; text-align: center; border: 1px solid black;" ><span t-esc="line.description_picking"/></td>
-                                <td style="padding: 8px; text-align: center; border: 1px solid black;" ><span t-esc="line.product_id.l10n_in_hsn_code"/></td>
-                                <td style="padding: 8px; text-align: center; border: 1px solid black;" ><span t-esc=""/></td>
-                                <td style="padding: 8px; text-align: center; border: 1px solid black;" ><span t-esc="line.product_uom_qty"/></td>
-                                <td style="padding: 8px; text-align: center; border: 1px solid black;" ><span t-esc="line.product_uom.name"/></td>
-                                <td style="padding: 8px; text-align: center; border: 1px solid black;" ><span t-esc="'{:.2f}'.format(line.sale_line_id.price_unit * (1 - line.sale_line_id.discount / 100))"/></td>
-                                <td style="padding: 8px; text-align: center; border: 1px solid black;" ><span t-esc="line.sale_line_id.price_subtotal"/></td>
+                                <td style="padding: 8px; text-align: center; border: 1px solid black;">
+                                    <span t-esc="sequence"/>
+                                </td>
+                                <td style="padding: 8px; text-align: center; border: 1px solid black;">
+                                    <span t-esc="line.description_picking"/>
+                                </td>
+                                <td style="padding: 8px; text-align: center; border: 1px solid black;">
+                                    <span t-esc="line.product_id.l10n_in_hsn_code"/>
+                                </td>
+                                <td style="padding: 8px; text-align: center; border: 1px solid black;">
+                                    <span t-esc=""/>
+                                </td>
+                                <td style="padding: 8px; text-align: center; border: 1px solid black;"><span
+                                        t-esc="line.quantity or line.product_uom_qty"/>&amp;nbsp;
+                                    <span>PCS</span>
+                                </td>
+                                <td style="padding: 8px; text-align: center; border: 1px solid black;">
+                                    <span t-esc="'{:.2f}'.format(line.price_unit * (1 - line.discount / 100))"/>
+                                </td>
+                                <td style="padding: 8px; text-align: center; border: 1px solid black;">
+                                    <span t-esc="line.product_uom.name"/>
+                                </td>
+                                <td style="padding: 8px; text-align: center; border: 1px solid black;">
+                                    <span t-esc="line.price_subtotal"/>
+                                </td>
                             </tr>
                             <t t-set="sequence" t-value="sequence + 1"/>
                         </t>
                     </tbody>
                 </table>
 
-            <div class="clearfix" name="so_total_summary">
-                <div id="total" class="row" name="total">
-                    <div t-attf-class="#{'col-6' if report_type != 'html' else 'col-sm-7 col-md-6'} ms-auto">
-                        <table class="table" style="font_weight:bold !important;    font-family: sans-serif;">
-                            <!-- Tax totals -->
-                            <t t-set="tax_totals" t-value="doc.sale_id.tax_totals"/>
-                            <t t-call="sale.document_tax_totals"/>
-                        </table>
+                <div class="clearfix" name="so_total_summary">
+                    <div id="total" class="row" name="total">
+                        <div t-attf-class="#{'col-6' if report_type != 'html' else 'col-sm-7 col-md-6'} ms-auto">
+                            <table class="table" style="font_weight:bold !important;    font-family: sans-serif;">
+                                <!-- Tax totals -->
+                                <t t-set="tax_totals" t-value="doc.tax_totals"/>
+                                <t t-foreach="tax_totals.get('subtotals')" t-as="subtotal">
+                                    <tr class="border-black o_subtotal">
+                                        <td>
+                                            <strong t-out="subtotal['name']">Untaxed Amount</strong>
+                                        </td>
+
+                                        <td class="text-end">
+
+                                            <span
+                                                    t-att-class="oe_subtotal_footer_separator"
+                                                    t-out="subtotal['formatted_amount']"
+                                            >27.00
+                                            </span>
+                                        </td>
+                                    </tr>
+
+                                    <t t-set="subtotal_to_show" t-value="subtotal['name']"/>
+                                    <t t-foreach="tax_totals['groups_by_subtotal'][subtotal_to_show]"
+                                       t-as="amount_by_group">
+                                        <t t-set="display_tax_base" t-value="tax_totals['display_tax_base']"/>
+                                        <tr>
+                                            <t t-if="tax_totals['display_tax_base']">
+                                                <td>
+                                                    <span t-if="doc.sale_id">Output</span>
+                                                    <span t-if="doc.purchase_id">Input</span>
+                                                    <span t-esc="amount_by_group['tax_group_name']"/>
+                                                    <span t-if="not amount_by_group['hide_base_amount']"
+                                                          class="text-nowrap">on
+                                                        <t t-esc="amount_by_group['formatted_tax_group_base_amount']"/>
+                                                    </span>
+                                                </td>
+                                                <td class="text-end o_price_total">
+                                                    <span class="text-nowrap"
+                                                          t-out="amount_by_group['formatted_tax_group_amount']">1.05
+                                                    </span>
+                                                </td>
+                                            </t>
+                                            <t t-else="">
+                                                <td>
+                                                    <span t-if="doc.sale_id">Output</span>
+                                                    <span t-if="doc.purchase_id">Input</span>
+                                                    <span t-out="amount_by_group['tax_group_name']">Tax 15%</span>
+                                                </td>
+                                                <td class="text-end o_price_total">
+                                                    <span class="text-nowrap"
+                                                          t-out="amount_by_group['formatted_tax_group_amount']">4.05
+                                                    </span>
+                                                </td>
+                                            </t>
+                                        </tr>
+                                    </t>
+                                </t>
+
+                                <tr t-if="doc.amount_total_difference">
+                                    <td>Round Off (+/-)</td>
+                                    <td class="text-end">
+                                        <span t-out="'{:.2f}'.format(abs(doc.amount_total_difference))">0</span>
+                                    </td>
+                                </tr>
+
+                                <!--Total amount with all taxes-->
+                                <tr class="border-black o_total">
+                                    <td>
+                                        <strong>Total</strong>
+                                    </td>
+                                    <td class="text-end">
+                                        <span t-out="doc.amount_total_rounded">31.05</span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
                 </div>
+                <span style="right:2%; position:absolute;">E. &amp; O.E</span>
+                <div class="oe_structure"></div>
+                <div style="margin-top:7%;">
+                    <p>Amount Chargeable (in words)</p>
+                    <p class="fw-bold" style="font_weight:600 !important;font-family: sans-serif !important; ">
+                        <t t-esc="doc.currency_id.amount_to_text(doc.amount_total)"/>
+                    </p>
+                </div>
+
+                <table style="width: 100%; border-collapse: collapse;margin:1% 0%;">
+                    <tr>
+                        <td style="width: 50%;">
+                            <p>Company's PAN:
+                                <span class="fw-bold"
+                                      style="font_weight:600 !important;font-family: sans-serif !important; "
+                                      t-esc="doc.company_id.partner_id.l10n_in_pan"/>
+                            </p>
+                            <p>Remarks:
+                                <span t-esc="doc.note"/>
+                            </p>
+                        </td>
+                        <td style="width: 50%;">
+                            <p style="font-weight: bold;">Company's Bank Details</p>
+                            <p>A/c Holder's Name :
+                                <span class="fw-bold"
+                                      style="font_weight:600 !important;font-family: sans-serif !important; "
+                                      t-if="doc.company_id.partner_id.bank_ids"
+                                      t-esc="doc.company_id.partner_id.bank_ids[0].acc_holder_name"/>
+                            </p>
+                            <p>Bank Name :
+                                <span class="fw-bold"
+                                      style="font_weight:600 !important;font-family: sans-serif !important; "
+                                      t-if="doc.company_id.partner_id.bank_ids and doc.company_id.partner_id.bank_ids[0].bank_id"
+                                      t-esc="doc.company_id.partner_id.bank_ids[0].bank_id.name"/>
+                            </p>
+                            <p>A/c No. :
+                                <span class="fw-bold"
+                                      style="font_weight:600 !important;font-family: sans-serif !important; "
+                                      t-if="doc.company_id.partner_id.bank_ids"
+                                      t-esc="doc.company_id.partner_id.bank_ids[0].acc_number"/>
+                            </p>
+                            <p>Branch &amp; IFS Code :
+                                <span class="fw-bold"
+                                      style="font_weight:600 !important;font-family: sans-serif !important; "
+                                      t-if="doc.company_id.partner_id.bank_ids"
+                                      t-esc="doc.company_id.partner_id.bank_ids[0].ifsc_code"/>
+                            </p>
+                            <p>SWIFT Code :
+                                <span class="fw-bold"
+                                      style="font_weight:600 !important;font-family: sans-serif !important; "
+                                      t-if="doc.company_id.partner_id.bank_ids"
+                                      t-esc="doc.company_id.partner_id.bank_ids[0].swift_code"/>
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+                <table style="width: 100%; border-collapse: collapse;margin:1% 0%;">
+                    <tr>
+                        <p style="text-decoration: underline;">Declaration</p>
+                        <P>We declare that this invoice shows the actual price of the goods described and that all
+                            particulars are true and correct.
+                        </P>
+                    </tr>
+                    <tr>
+                        <p style="font-weight: bold;right:0;">for KPT Piping System Pvt. Ltd.</p>
+                    </tr>
+                    <tr>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <td style="width:40%;">Prepared by</td>
+                        <td style="width:40%;">Verified by</td>
+                        <td style="width:20%;">Authorised Signatory</td>
+                    </tr>
+
+                </table>
+
+                <div class="oe_structure"/>
             </div>
-            <span style="right:2%; position:absolute;">E. &amp; O.E</span>
-            <div class="oe_structure"></div>
-            <div style="margin-top:7%;">
-                <p>Amount Chargeable (in words)</p>
-                <p class="fw-bold" style="font_weight:600 !important;font-family: sans-serif !important; "><t t-esc="doc.sale_id.currency_id.amount_to_text(doc.sale_id.amount_total)"/></p>
-            </div>
-
-            <table style="width: 100%; border-collapse: collapse;margin:1% 0%;">
-                <tr>
-                    <td style="width: 50%;">
-                        <p>Company's PAN: <span class="fw-bold" style="font_weight:600 !important;font-family: sans-serif !important; " t-esc="doc.company_id.partner_id.l10n_in_pan" /></p>
-                        <p>Remarks: <span t-esc="doc.note" /></p>
-                    </td>
-                    <td style="width: 50%;">
-                        <p style="font-weight: bold;">Company's Bank Details</p>
-                        <p>A/c Holder's Name : <span class="fw-bold" style="font_weight:600 !important;font-family: sans-serif !important; " t-if="doc.company_id.partner_id.bank_ids" t-esc="doc.company_id.partner_id.bank_ids[0].acc_holder_name"/></p>
-                        <p>Bank Name : <span class="fw-bold" style="font_weight:600 !important;font-family: sans-serif !important; " t-if="doc.company_id.partner_id.bank_ids and doc.company_id.partner_id.bank_ids[0].bank_id" t-esc="doc.company_id.partner_id.bank_ids[0].bank_id.name"/></p>
-                        <p>A/c No. : <span class="fw-bold" style="font_weight:600 !important;font-family: sans-serif !important; " t-if="doc.company_id.partner_id.bank_ids" t-esc="doc.company_id.partner_id.bank_ids[0].acc_number"/></p>
-                        <p>Branch &amp; IFS Code : <span class="fw-bold" style="font_weight:600 !important;font-family: sans-serif !important; " t-if="doc.company_id.partner_id.bank_ids" t-esc="doc.company_id.partner_id.bank_ids[0].ifsc_code"/></p>
-                        <p>SWIFT Code : <span class="fw-bold" style="font_weight:600 !important;font-family: sans-serif !important; " t-if="doc.company_id.partner_id.bank_ids" t-esc="doc.company_id.partner_id.bank_ids[0].swift_code"/></p>
-                    </td>
-                </tr>
-            </table>
-            <table style="width: 100%; border-collapse: collapse;margin:1% 0%;">
-                <tr>
-                    <p style="text-decoration: underline;">Declaration</p>
-                    <P>We declare that this invoice shows the actual price of the goods described and that all particulars are true and correct.</P>
-                </tr>
-                <tr>
-                    <p style="font-weight: bold;right:0;"> for KPT Piping System Pvt. Ltd.</p>
-                </tr>
-                <tr>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <td style="width:40%;">Prepared by </td>
-                    <td style="width:40%;">Verified by </td>
-                    <td style="width:20%;">Authorised Signatory</td>
-                </tr>
-
-            </table>
-
-            <div class="oe_structure"/>
-        </div>
-    </t>
-</template>
+        </t>
+    </template>
 
     <template id="report_delivery_note">
         <t t-call="web.html_container">
@@ -195,15 +355,16 @@
     </template>
 
 
-
     <record id="action_report_delivery_note" model="ir.actions.report">
-            <field name="name">Delivery Note</field>
-            <field name="model">stock.picking</field>
-            <field name="report_type">qweb-pdf</field>
-            <field name="report_name">sale_order_extension.report_delivery_note</field>
-            <field name="report_file">sale_order_extension.report_delivery_note</field>
-            <field name="print_report_name">'Delivery Note - %s' % (object.name)</field>
-        </record>
+        <field name="name">Delivery Challan</field>
+        <field name="model">stock.picking</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">sale_order_extension.report_delivery_note</field>
+        <field name="report_file">sale_order_extension.report_delivery_note</field>
+        <field name="print_report_name">'Delivery Challan - %s' % (object.name)</field>
+        <field name="binding_model_id" ref="stock.model_stock_picking"/>
+        <field name="binding_type">report</field>
+    </record>
 
 
 </odoo>

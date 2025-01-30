@@ -6,6 +6,34 @@ class SaleOrder(models.Model):
     functionality"""
     _inherit = 'sale.order'
 
+
+    amount_total_rounded = fields.Float(
+        string="Rounded Total",
+        compute="_compute_price_total_rounded",
+        store=True,
+        help="Price Total rounded to the nearest integer."
+    )
+
+    amount_total_difference = fields.Float(
+        string="Rounding Difference",
+        compute="_compute_price_total_difference",
+        store=True,
+        help="Difference between the rounded price total and the original price total."
+    )
+
+    @api.depends('amount_total')
+    def _compute_price_total_rounded(self):
+        """Compute the rounded value of the price_total field."""
+        for sale in self:
+            sale.amount_total_rounded = round(sale.amount_total) if sale.amount_total else 0.0
+
+    @api.depends('amount_total', 'amount_total_rounded')
+    def _compute_price_total_difference(self):
+        """Compute the difference between the rounded value and the original price_total."""
+        for sale in self:
+            sale.amount_total_difference = (sale.amount_total_rounded - sale.amount_total) if sale.amount_total else 0.0
+
+
     def _find_mail_template(self):
         """ Get the appropriate mail template for the current sales order based on its state.
 

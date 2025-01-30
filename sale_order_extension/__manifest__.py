@@ -8,7 +8,7 @@
         'views/delivery_slip_template.xml',
         'views/kpt_sale_quotation_template.xml',
         'views/kpt_pro_forma_invoice.xml',
-        # 'views/stock_picking.xml'
+        'views/stock_picking.xml'
     ],
     'license': 'LGPL-3',
     'installable': True,

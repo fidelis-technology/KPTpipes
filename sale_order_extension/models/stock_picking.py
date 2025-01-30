@@ -4,7 +4,6 @@ from odoo import models, fields, api
 class StockPicking(models.Model):
     _inherit = "stock.picking"
 
-    sample_transfer = fields.Boolean('Sample Transfer', default=True)
     amount_untaxed = fields.Monetary(string="Untaxed Amount", store=True, compute='_compute_amounts', tracking=5)
     amount_tax = fields.Monetary(string="Taxes", store=True, compute='_compute_amounts')
     amount_total = fields.Monetary(string="Total", store=True, compute='_compute_amounts', tracking=4)
@@ -12,11 +11,35 @@ class StockPicking(models.Model):
         comodel_name='res.currency',
         compute='_compute_currency_id',
         store=True,
-        precompute=True,
         ondelete='restrict'
     )
     tax_totals = fields.Binary(compute='_compute_tax_totals', exportable=False)
     note = fields.Text()
+    amount_total_rounded = fields.Float(
+        string="Rounded Total",
+        compute="_compute_price_total_rounded",
+        store=True,
+        help="Price Total rounded to the nearest integer."
+    )
+
+    amount_total_difference = fields.Float(
+        string="Rounding Difference",
+        compute="_compute_price_total_difference",
+        store=True,
+        help="Difference between the rounded price total and the original price total."
+    )
+
+    @api.depends('amount_total')
+    def _compute_price_total_rounded(self):
+        """Compute the rounded value of the price_total field."""
+        for picking in self:
+            picking.amount_total_rounded = round(picking.amount_total) if picking.amount_total else 0.0
+
+    @api.depends('amount_total', 'amount_total_rounded')
+    def _compute_price_total_difference(self):
+        """Compute the difference between the rounded value and the original price_total."""
+        for picking in self:
+            picking.amount_total_difference = (picking.amount_total_rounded - picking.amount_total) if picking.amount_total else 0.0
 
     @api.depends('company_id')
     def _compute_currency_id(self):

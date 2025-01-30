@@ -6,9 +6,9 @@
         <field name="model">stock.picking</field>
         <field name="inherit_id" ref="stock.view_picking_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='origin']" position="after">
-                <field name="sample_transfer"/>
-            </xpath>
+<!--            <xpath expr="//field[@name='origin']" position="after">-->
+<!--                <field name="sample_transfer"/>-->
+<!--            </xpath>-->
             <xpath expr="//page[@name='operations']/field/tree/field[@name='product_uom'][2]" position="after">
                 <field
                         name="price_unit"
@@ -18,6 +18,7 @@
                         widget="many2many_tags"
                         options="{'no_create': True}"
                         />
+                <field name="discount" optional="hide" />
                 <field name="price_subtotal" string="Tax excl." />
                 <field name="price_total"
                        string="Tax incl."
