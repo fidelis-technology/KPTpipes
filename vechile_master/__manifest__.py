@@ -24,7 +24,8 @@
         'views/repair_card_report.xml',
         'data/sequence.xml',
         'views/workshop_master_view.xml',
-        'views/product_template.xml'
+        'views/product_template.xml',
+        'views/job_card_summary_views.xml',
     ],
     'installable': True,
     'application': True,

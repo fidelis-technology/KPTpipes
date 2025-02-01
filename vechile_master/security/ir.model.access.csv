@@ -14,3 +14,4 @@ access_status_master,status.master,model_status_master,,1,1,1,1
 access_work_section_master,work.section.master,model_work_section_master,,1,1,1,1
 access_product_issue_user,product.issue.user,model_product_issue,base.group_user,1,1,1,1
 access_product_issue_line_user,product.issue.line.user,model_product_issue_line,base.group_user,1,1,1,1
+access_job_card_summary_wizard,access_job_card_summary_wizard,model_job_card_summary_wizard,base.group_user,1,1,1,1
