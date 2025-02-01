@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_stock_picking_form_extended" model="ir.ui.view">
+        <field name="name">stock.picking.form.extended</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Add `is_inventory_operation` field -->
+            <xpath expr="//field[@name='move_ids_without_package']" position="before">
+                <field name="is_inventory_operation" invisible="1"/>
+            </xpath>
+
+            <!-- Modify the tree view of `move_ids_without_package` -->
+            <xpath expr="//field[@name='move_ids_without_package']/tree//field[@name='product_id']" position="after">
+<!--                <field name="product_uom_qty"/>-->
+                <field name="unit_cost"
+                       invisible="parent.is_inventory_operation == False"
+                       optional="show"
+                       sum="Total Unit Cost"/>
+                <field name="product_qty_available"
+                       invisible="parent.is_inventory_operation == False"
+                       optional="show"/>
+                <field name="display_taxes"
+                       widget="many2many_tags"
+                       invisible="parent.is_inventory_operation == False"
+                       optional="show"/>
+                <field name="total_cost"
+                       invisible="parent.is_inventory_operation == False"
+                       optional="show"
+                       sum="Total"/>
+                <field name="total_cost_with_tax"
+                       invisible="parent.is_inventory_operation == False"
+                       optional="show"
+                       sum="Total With Tax"/>
+            </xpath>
+
+            <!-- Add totals group below the `move_ids_without_package` -->
+            <xpath expr="//field[@name='move_ids_without_package']" position="after">
+                <group invisible="is_inventory_operation == False">
+                            <group></group>
+                            <group>
+                                <field name="total_picking_cost"/>
+                                <field name="total_picking_cost_with_tax"/>
+                            </group>
+
+                </group>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

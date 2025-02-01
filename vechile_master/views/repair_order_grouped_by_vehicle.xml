@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Search View for Repair Orders -->
+    <record id="view_repair_order_search_grouped_by_vehicle" model="ir.ui.view">
+        <field name="name">repair.order.search.grouped.by.vehicle</field>
+        <field name="model">repair.order</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" string="Repair Reference"/>
+                <field name="vehicle_name" string="Vehicle Number"/>
+                <field name="partner_id" string="Customer"/>
+                <field name="product_id" string="Product"/>
+                
+                <filter string="New" name="draft" domain="[('state','=','draft')]"/>
+                <filter string="Confirmed" name="confirmed" domain="[('state','=','confirmed')]"/>
+                <filter string="Under Repair" name="under_repair" domain="[('state','=','under_repair')]"/>
+                <filter string="Repaired" name="done" domain="[('state','=','done')]"/>
+                <filter string="Cancelled" name="cancel" domain="[('state','=','cancel')]"/>
+                <filter string="Returned" name="returned" domain="[('state','=','2binvoiced')]"/>
+                <filter string="Late" name="late" domain="[('schedule_date','&lt;',context_today().strftime('%Y-%m-%d'))]"/>
+                
+                <separator/>
+                <filter string="Created Today" name="created_today" 
+                    domain="[('create_date','&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0))), 
+                             ('create_date','&lt;=', datetime.datetime.combine(context_today(), datetime.time(23,59,59)))]"/>
+                
+                <group expand="0" string="Group By">
+                    <filter string="Customer" name="customer" context="{'group_by': 'partner_id'}"/>
+                    <filter string="Product" name="product" context="{'group_by': 'product_id'}"/>
+                    <filter string="Status" name="status" context="{'group_by': 'state'}"/>
+                    <filter string="Vehicle" name="vehicle" context="{'group_by': 'vehicle_name'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Tree View to Group Repair Orders by Vehicle -->
+    <record id="view_repair_order_tree_grouped_by_vehicle" model="ir.ui.view">
+        <field name="name">repair.order.tree.grouped.by.vehicle</field>
+        <field name="model">repair.order</field>
+        <field name="arch" type="xml">
+            <tree string="Repair Orders by Vehicle" decoration-info="state in ('draft','confirmed')" decoration-warning="state == 'under_repair'" decoration-success="state == 'done'" decoration-danger="state == 'cancel'">
+                <field name="name"/>
+                <field name="vehicle_name" string="Vehicle Number"/>
+                <field name="schedule_date" string="Scheduled Date"/>
+                <field name="final_cost" string="Total Cost" sum="Total"/>
+                <field name="state" string="Repair Stage" widget="badge" decoration-info="state in ('draft','confirmed')" decoration-warning="state == 'under_repair'" decoration-success="state == 'done'" decoration-danger="state == 'cancel'"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Action to View Repair Orders Grouped by Vehicle -->
+    <record id="action_repair_order_grouped_by_vehicle" model="ir.actions.act_window">
+        <field name="name">Repair Orders by Vehicle</field>
+        <field name="res_model">repair.order</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_repair_order_search_grouped_by_vehicle"/>
+        <field name="view_id" ref="view_repair_order_tree_grouped_by_vehicle"/>
+        <field name="context">{}</field>
+        <field name="domain">[]</field>
+        <field name="context">{'search_default_group_vehicle': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No repair orders found
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu Item for Repair Orders Grouped by Vehicle -->
+    <menuitem id="menu_repair_orders_grouped_by_vehicle"
+              name="Repair Orders by Vehicle"
+              parent="repair.repair_menu"
+              sequence="20"
+              action="action_repair_order_grouped_by_vehicle"/>
+
+</odoo>

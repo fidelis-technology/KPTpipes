@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!--form view-->
+    <record id='vehicle_master_view_form' model='ir.ui.view'>
+        <field name="name">vehicle.master.view.form</field>
+        <field name="model">vehicle.master</field>
+        <field name="arch" type="xml">
+            <form string="Vehicle" js_class="vehicle_master_form">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                            <button name="action_view_product_issues"
+                                    type="object"
+                                    class="oe_stat_button"
+                                    icon="fa-truck">
+                                <div class="o_field_widget o_stat_info">
+                                    <span class="o_stat_value">
+                                        <field name="product_issue_count"/>
+                                    </span>
+                                    <span class="o_stat_text">Product Issues</span>
+                                </div>
+                            </button>
+                            <button name="action_view_repairs"
+                                    type="object"
+                                    class="oe_stat_button"
+                                    icon="fa-wrench">
+                                <div class="o_field_widget o_stat_info">
+                                    <span class="o_stat_value">
+                                        <field name="repair_count"/>
+                                    </span>
+                                    <span class="o_stat_text">Repairs</span>
+                                </div>
+                            </button>
+                        </div>
+                    <field name="image" widget="image" class="oe_avatar"/>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" placeholder="Vehicle Serial Number" required="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group name="vehicle_info" string="Vehicle Information">
+                            <field name="number_plate" placeholder="e.g., ABC-123"/>
+                            <field name="chassis_number" placeholder="e.g., VIN12345678901234"/>
+                            <field name="create_date"/>
+                        </group>
+                        <group name="driver_info" string="Driver Information">
+                            <field name="driver_id" placeholder="Driver's Full Name"/>
+                            <field name="driver_mobile" placeholder="e.g., +1234567890"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="model_details" string="Vehicle Details">
+                            <group>
+                                <group name="model_info" string="Model Information">
+                                    <field name="model_name" placeholder="e.g., Camry"/>
+                                    <field name="model_year" placeholder="e.g., 2024"/>
+                                    <field name="model_transmission"/>
+                                    <field name="color" placeholder="e.g., Metallic Blue"/>
+                                </group>
+                                <group name="technical_info" string="Technical Information">
+                                    <field name="manufacturer_name" placeholder="e.g., Toyota"/>
+                                    <field name="horse_power" placeholder="e.g., 200"/>
+                                    <field name="engine_power" placeholder="e.g., 150"/>
+                                    <field name="fuel_type"/>
+                                </group>
+                            </group>
+                            <group string="Notes">
+                                <field name="note" placeholder="Add any additional information about the vehicle..." nolabel="1"/>
+                            </group>
+                        </page>
+                        <page name="documents" string="Documents">
+                            <group>
+                                <field name="doc_attach" widget="many2many_binary" string="Vehicle Documents"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action for Vehicle Master -->
+    <record id='vehicle_master_action' model='ir.actions.act_window'>
+        <field name="name">Vehicle</field>
+        <field name="res_model">vehicle.master</field>
+        <field name="view_mode">tree,form,kanban,pivot,activity,graph</field>
+    </record>
+
+    <!--Tree View-->
+    <record id='vehicle_master_view_tree' model='ir.ui.view'>
+        <field name="name">vehicle.master.view.tree</field>
+        <field name="model">vehicle.master</field>
+        <field name="arch" type="xml">
+            <tree string="Vehicle">
+                <field name="name" string="Vehicle name"/>
+                <field name="number_plate"/>
+                <field name="chassis_number"/>
+                <field name="create_date"/>
+                <field name="model_name"/>
+                <field name="color"/>
+                <field name="fuel_type"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Kanban View Definition -->
+    <record id="vehicle_master_view_kanban" model="ir.ui.view">
+        <field name="name">vehicle.master.view.kanban</field>
+        <field name="model">vehicle.master</field>
+        <field name="arch" type="xml">
+            <kanban string="Vehicles">
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <div class="o_kanban_image">
+                                <!-- You can add an image or placeholder here if needed -->
+                            </div>
+                            <div class="o_kanban_details">
+                                <strong><field name="name"/></strong>
+                                <div><field name="vehicle_name"/></div>
+                                <div><field name="number_plate"/></div>
+                                <div><field name="chassis_number"/></div>
+                                <div><field name="model_name"/></div>
+                                <div><field name="color"/></div>
+                                <div><field name="fuel_type"/></div>
+                                <div><field name="create_date"/></div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+    <record id="action_view_product_issues" model="ir.actions.act_window">
+        <field name="name">Product Issues</field>
+        <field name="res_model">product.issue</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('vehicle_id', '=', context.get('default_vehicle_id'))]</field>
+        <field name="context">{'default_vehicle_id': active_id}</field>
+    </record>
+
+    <record id='vehicle_master_action' model='ir.actions.act_window'>
+        <field name="name">Vehicle</field>
+        <field name="res_model">vehicle.master</field>
+        <field name="view_mode">tree,form,kanban,pivot,activity,graph</field>
+    </record>
+
+    <menuitem id="vehicle_master"
+              name="Vehicle"
+              action="vehicle_master_action"
+              web_icon="vechile_master,static/description/icon.png"
+              sequence="5"
+
+    />
+</odoo>

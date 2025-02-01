@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <template id="repair_card_template">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <div class="page">
+                        <!-- Header -->
+                        <div style="text-align: center; margin-bottom: 15px;">
+                            <img t-if="doc.company_id.logo"
+                                 t-att-src="'data:image/png;base64,%s' % doc.company_id.logo.decode('utf-8')"
+                                 style="max-height: 70px;" alt="Company Logo"/>
+                            <h3 style="margin: 5px 0; font-size: 18px;">
+                                <span t-esc="doc.company_id.name">HARMAN STAR</span>
+                            </h3>
+                            <p>
+                                <strong>
+                                    <span t-esc="doc.company_id.street">Plot No. 21/20 – M-32/1</span>,
+                                    <span t-esc="doc.company_id.street2">Behind KM Trading Market Mussafah</span>,
+                                    <span t-esc="doc.company_id.city"></span>,
+                                    <span t-esc="doc.company_id.state_id.name">Abu Dhabi (AE)</span>,
+                                    <span t-esc="doc.company_id.country_id.name">United Arab Emirates</span>,
+                                    <span t-esc="doc.company_id.zip"></span>
+                                </strong>
+                            </p>
+                            <h4 style="margin: 5px 0; font-size: 16px;">Repair Invoice</h4>
+                            <h4 style="margin: 5px 0; font-size: 16px;">Invoice No..</h4>
+<!--                            <span t-esc="doc.repair.name or 'N/A'"/>-->
+                        </div>
+
+                        <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px; border: 1px solid black;">
+                            <tr style="border: 1px solid black;">
+                                <!-- Vehicle Details Column -->
+                                <td style="border: 1px solid black; padding: 10px; vertical-align: top;">
+                                    <h4 style="color: #22409a; margin: 0 0 10px 0; border-bottom: 1px solid #22409a; padding-bottom: 5px;">
+                                        Vehicle Details
+                                    </h4>
+                                    <p style="margin: 5px 0;">
+                                        <strong>Vehicle Name:</strong>
+                                        <span t-esc="doc.vehicle_name.name or 'N/A'"/>
+                                    </p>
+                                    <p style="margin: 5px 0;">
+                                        <strong>Chassis Number:</strong>
+                                        <span t-esc="doc.chassis_number or 'N/A'"/>
+                                    </p>
+                                    <p style="margin: 5px 0;">
+                                        <strong>Number Plate:</strong>
+                                        <span t-esc="doc.number_plate or 'N/A'"/>
+                                    </p>
+                                </td>
+
+                                <!-- Time Details Column -->
+                                <td style="border: 1px solid black; padding: 10px; vertical-align: top;">
+                                    <h4 style="color: #22409a; margin: 0 0 10px 0; border-bottom: 1px solid #22409a; padding-bottom: 5px;">
+                                        Time Details
+                                    </h4>
+                                    <p style="margin: 5px 0;">
+                                        <strong>Time In:</strong>
+                                        <span t-esc="doc.time_in or 'N/A'"/>
+                                    </p>
+                                    <p style="margin: 5px 0;">
+                                        <strong>Time Out:</strong>
+                                        <span t-esc="doc.time_out or 'N/A'"/>
+                                    </p>
+                                </td>
+
+                                <!-- Driver Details Column -->
+                                <td style="border: 1px solid black; padding: 10px; vertical-align: top;">
+                                    <h4 style="color: #22409a; margin: 0 0 10px 0; border-bottom: 1px solid #22409a; padding-bottom: 5px;">
+                                        Driver Details
+                                    </h4>
+                                    <p style="margin: 5px 0;">
+                                        <strong>Driver Name:</strong>
+                                        <span t-esc="doc.driver_id.name or 'N/A'"/>
+                                    </p>
+                                    <p style="margin: 5px 0;">
+                                        <strong>Driver Mobile:</strong>
+                                        <span t-esc="doc.driver_mobile or 'N/A'"/>
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+
+
+                        <!-- Fault Details Table -->
+                        <t t-if="doc.problem_ids">
+                            <h4 style="color: #22409a; margin: 10px 0;">Fault Details</h4>
+                            <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
+                                <thead>
+                                    <tr style="background-color: #22409a; color: white;">
+                                        <th style="border: 1px solid #000; padding: 8px; text-align: left;">S.No</th>
+                                        <th style="border: 1px solid #000; padding: 8px; text-align: left;">Problem/Fault
+                                        </th>
+                                        <th style="border: 1px solid #000; padding: 8px; text-align: left;">Work Section
+                                        </th>
+                                        <th style="border: 1px solid #000; padding: 8px; text-align: left;">Work Status</th>
+                                        <th style="border: 1px solid #000; padding: 8px; text-align: left;">Attempted By
+                                        </th>
+                                        <th style="border: 1px solid #000; padding: 8px; text-align: left;">Remarks</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-set="value" t-value="1"/>
+                                    <t t-foreach="doc.problem_ids" t-as="problem">
+                                        <tr>
+                                            <td style="border: 1px solid #000; padding: 8px;" t-esc="value or 'N/A'"/>
+                                            <td style="border: 1px solid #000; padding: 8px;"
+                                                t-esc="problem.problem_id.problem_name or 'N/A'"/>
+                                            <td style="border: 1px solid #000; padding: 8px;"
+                                                t-esc="problem.work_section_id.section_name or 'N/A'"/>
+                                            <td style="border: 1px solid #000; padding: 8px;"
+                                                t-esc="problem.status_id.status_name or 'N/A'"/>
+                                            <td style="border: 1px solid #000; padding: 8px;"
+                                                t-esc="problem.employee_id.name or 'N/A'"/>
+                                            <td style="border: 1px solid #000; padding: 8px;"
+                                                t-esc="problem.remarks or 'N/A'"/>
+                                        </tr>
+                                        <t t-set="value" t-value="value + 1"/>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </t>
+
+                        <!-- Parts Table -->
+                        <t t-if="doc.move_ids">
+                            <h4 style="color: #22409a; margin: 10px 0;">Spare Parts</h4>
+                            <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
+                                <thead>
+                                    <tr style="background-color: #22409a; color: white;">
+                                        <th style="border: 1px solid #000; padding: 8px; text-align: left;">S.No</th>
+                                        <th style="border: 1px solid #000; padding: 8px; text-align: left;">Spare Part</th>
+                                        <th style="border: 1px solid #000; padding: 8px; text-align: left;">Qty</th>
+                                        <th style="border: 1px solid #000; padding: 8px; text-align: left;">Cost</th>
+                                        <th style="border: 1px solid #000; padding: 8px; text-align: left;">Amount (<t
+                                                t-out="doc.company_id.currency_id.name"/>)
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-set="value" t-value="1"/>
+                                    <t t-foreach="doc.move_ids" t-as="move">
+                                        <tr>
+                                            <td style="border: 1px solid #000; padding: 8px;" t-esc="value or 'N/A'"/>
+                                            <td style="border: 1px solid #000; padding: 8px;"
+                                                t-esc="move.product_id.display_name or 'N/A'"/>
+                                            <td style="border: 1px solid #000; padding: 8px;" t-esc="move.product_uom_qty"/>
+                                            <td style="border: 1px solid #000; padding: 8px;" t-esc="move.product_cost"/>
+                                            <td style="border: 1px solid #000; padding: 8px;"
+                                                t-esc="(move.product_uom_qty *  move.product_cost)"/>
+                                        </tr>
+                                        <t t-set="value" t-value="value + 1"/>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </t>
+
+                        <t t-if="doc.extra_cost_ids">
+                            <h4 style="color: #22409a; margin: 10px 0;">Extra Cost</h4>
+                            <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
+                                <thead>
+                                    <tr style="background-color: #22409a; color: white;">
+                                        <th style="border: 1px solid #000; padding: 8px; text-align: left;">S.No</th>
+                                        <th style="border: 1px solid #000; padding: 8px; text-align: left;">Equipment Name
+                                        </th>
+                                        <th style="border: 1px solid #000; padding: 8px; text-align: left;">Serial Number
+                                        </th>
+                                        <th style="border: 1px solid #000; padding: 8px; text-align: left;">Workshop</th>
+                                        <th style="border: 1px solid #000; padding: 8px; text-align: left;">Extra Price (<t
+                                                t-out="doc.company_id.currency_id.name"/>)
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-set="value" t-value="1"/>
+                                    <t t-foreach="doc.extra_cost_ids" t-as="extra_cost">
+                                        <tr>
+                                            <td style="border: 1px solid #000; padding: 8px;" t-esc="value or 'N/A'"/>
+                                            <td style="border: 1px solid #000; padding: 8px;"
+                                                t-esc="extra_cost.equipment_name or 'N/A'"/>
+                                            <td style="border: 1px solid #000; padding: 8px;"
+                                                t-esc="extra_cost.serial_number"/>
+                                            <td style="border: 1px solid #000; padding: 8px;"
+                                                t-esc="extra_cost.workshop_id.workshop_name"/>
+                                            <td style="border: 1px solid #000; padding: 8px;"
+                                                t-esc="extra_cost.extra_price"/>
+                                        </tr>
+                                        <t t-set="value" t-value="value + 1"/>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </t>
+
+
+                        <table class="table table-sm table-border" style="width: 100%; margin-top: 10px">
+                            <tr class="border-top: 1px solid black;">
+                                <td colspan="6" style="text-align: right; width: 85%">
+                                    <strong>Subtotal</strong>
+                                </td>
+                                <td style="text-align: right; width: 15%;">
+                                    <t t-esc="sum(line.product_uom_qty * line.product_cost for line in doc.move_ids)"/>
+                                </td>
+                            </tr>
+                            <t t-if="doc.extra_cost">
+                                <tr>
+                                    <td colspan="6" style="text-align: right; width: 85%;">
+                                        <strong>Extra Cost</strong>
+                                    </td>
+                                    <td style="text-align: right; width: 15%;">
+                                        <t t-esc="doc.extra_cost"/>
+                                    </td>
+                                </tr>
+                            </t>
+                            <tr class="border-top: 1px solid black">
+                                <td colspan="6" style="text-align: right; width: 85%;">
+                                    <strong>Total</strong>
+                                </td>
+                                <td style="text-align: right; width: 15%;">
+                                    <t t-esc="doc.final_cost"/>
+                                </td>
+                            </tr>
+                        </table>
+
+
+                        <!-- Agreement and Signature -->
+                        <p style="margin: 10px 0;">The driver agrees that all the work has been written on the job
+                            card.
+                        </p>
+                        <div style="display: flex; margin-top: 15px; gap:5px width: 100%;">
+                            <div style=" margin-bottom:10px; width:20%">
+                                <label style="margin-bottom: 5px;">Date:</label>
+                                <input style="border: 1px solid #000;height: 50px;"></input>
+                            </div>
+                            <div style="width:20%">
+                                <label style="margin-bottom: 5px;">Driver Signature</label>
+                                <input style="border: 1px solid #000;height: 50px;"></input>
+                            </div>
+                        </div>
+
+                    </div>
+                </t>
+            </t>
+        </template>
+
+        <!-- Paper Format repair Card -->
+        <record id="paperformat_repair_card" model="report.paperformat">
+            <field name="name">Repair Invoice Paper Fromat</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">10</field>
+            <field name="margin_bottom">10</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">35</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <!-- Report Action -->
+        <record id="action_repair_card" model="ir.actions.report">
+            <field name="name">Repair Invoice</field>
+            <field name="model">repair.order</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">vechile_master.repair_card_template</field>
+            <field name="paperformat_id" ref="vechile_master.paperformat_repair_card"/>
+            <field name="print_report_name">'Repair Invoice - %s' % (object.name)</field>
+            <field name="binding_type">report</field>
+            <field name="binding_model_id" ref="repair.model_repair_order"/>
+        </record>
+    </data>
+</odoo>

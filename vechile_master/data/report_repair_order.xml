@@ -1,0 +1,12 @@
+<odoo>
+    <!-- Report Action -->
+    <record id="action_report_repair_order" model="ir.actions.report">
+        <field name="name">Repair Report</field>
+        <field name="model">repair.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">repair_module.report_repair_order_vehicle</field>  <!-- Report Template Name -->
+        <field name="report_file">repair_module.report_repair_order_vehicle</field>  <!-- Report Template Name -->
+        <field name="binding_model_id" ref="repair.model_repair_order"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

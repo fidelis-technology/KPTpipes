@@ -1,0 +1,16 @@
+id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+access_vehicle_master,vehicle.master,model_vehicle_master,base.group_user,1,1,1,1
+access_repair_order_extra_cost_wizard,access_repair_order_extra_cost_wizard,model_repair_order_extra_cost_wizard,base.group_user,1,1,1,1
+access_repair_order_extra_cost_user,repair.order.extra.cost.access,model_repair_order_extra_cost,base.group_user,1,1,1,1
+access_workshop_master_user,workshop.master.user,model_workshop_master,base.group_user,1,1,1,0
+access_workshop_master_manager,workshop.master.manager,model_workshop_master,base.group_system,1,1,1,1
+access_vehicle_repair_report_wizard,access.vehicle.repair.report.wizard,model_vehicle_repair_report_wizard,base.group_user,1,1,1,1
+access_equipment_master_user,equipment.master.user,model_equipment_master,base.group_user,1,1,1,0
+access_equipment_master_manager,equipment.master.manager,model_equipment_master,base.group_system,1,1,1,1
+access_repair_order_extra_cost_equipment_line,access.repair.order.extra.cost.equipment.line,model_repair_order_extra_cost_equipment_line,base.group_user,1,1,1,1
+access_repair_problem,repair.problem,model_repair_problem,,1,1,1,1
+access_problem_master,problem.master,model_problem_master,,1,1,1,1
+access_status_master,status.master,model_status_master,,1,1,1,1
+access_work_section_master,work.section.master,model_work_section_master,,1,1,1,1
+access_product_issue_user,product.issue.user,model_product_issue,base.group_user,1,1,1,1
+access_product_issue_line_user,product.issue.line.user,model_product_issue_line,base.group_user,1,1,1,1

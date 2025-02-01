@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_vehicle_repair_report_wizard_form" model="ir.ui.view">
+        <field name="name">vehicle.repair.report.wizard.form</field>
+        <field name="model">vehicle.repair.report.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Vehicle Repair Report">
+                <group>
+                    <group>
+                        <field name="start_date"/>
+                        <field name="end_date"/>
+                    </group>
+                    <group>
+                        <field name="all_vehicles"/>
+                        <field name="vehicle_id" invisible="all_vehicles" required="not all_vehicles"/>
+                        <field name="include_product_issues"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="generate_excel_report" string="Generate Report" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_vehicle_repair_report_wizard" model="ir.actions.act_window">
+        <field name="name">Vehicle Repair Report</field>
+        <field name="res_model">vehicle.repair.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="vehicle_master_menu_reporting"
+              name="Reporting"
+              parent="vehicle_master"
+              sequence="100"/>
+
+    <menuitem id="menu_vehicle_repair_report_vehicle_module"
+              name="Vehicle Repair Report"
+              parent="vehicle_master_menu_reporting"
+              action="action_vehicle_repair_report_wizard"
+              sequence="101"/>
+
+    <menuitem id="menu_vehicle_repair_report_repair_module"
+              name="Vehicle Repair Report"
+              parent="repair.repair_menu_reporting"
+              action="action_vehicle_repair_report_wizard"
+              sequence="102"/>
+</odoo>
