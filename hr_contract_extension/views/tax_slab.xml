@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Action for Tax Slab -->
+    <record id="action_tax_slab" model="ir.actions.act_window">
+        <field name="name">Tax Slabs</field>
+        <field name="res_model">tax.slab</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <!-- Tree View for Tax Slabs -->
+    <record id="view_tax_slab_tree" model="ir.ui.view">
+        <field name="name">tax.slab.tree</field>
+        <field name="model">tax.slab</field>
+        <field name="arch" type="xml">
+            <tree string="Tax Slabs" editable="top">
+                <field name="tax_regime"/>
+                <field name="tax_regime_description"/>
+                <field name="tax_regime_per"/>
+                <field name="tax_regime_amt_from"/>
+                <field name="tax_regime_amt_to"/>
+            </tree>
+        </field>
+    </record>
+    <!-- Menu Items -->
+    <menuitem id="menu_tax_root" name="Tax Management" sequence="10" parent="hr_work_entry_contract_enterprise.menu_hr_payroll_configuration" />
+    <menuitem id="menu_tax_slab" name="Tax Slabs"  parent="menu_tax_root" action="action_tax_slab" sequence="20"/>
+</odoo>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="hr_contract_extension_view_form" model="ir.ui.view">
+        <field name="name">hr.contract.form</field>
+        <field name="model">hr.contract</field>
+        <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='other']" position="after">
+                <page string="TDS Details" name="tds_details" >
+                    <group>
+                        <group>
+                            <field name="annual_salary" />
+                            <field name="other_income" />
+                            <field name="gross_income" />
+                            <field name="total_deductions" />
+                            <field name="taxable_amount" />
+                            <field name="tax_payable" readonly="1" force_save="1" />
+                        </group>
+                        <group>
+                            <field name="tax_regime" />
+                            <field name="tax_regime_slab" domain="[('tax_regime', '=', tax_regime)]" readonly="1" force_save="1" options="{'no_create': True, 'no_open': True}" />
+                            <field name="tds_deduction_month" readonly="1" force_save="1"/>
+                        </group>
+                        <field name="deduction_ids">
+                            <tree editable="top">
+                                <field name="name" />
+                                <field name="deduction_amt"  />
+                            </tree>
+                        </field>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
