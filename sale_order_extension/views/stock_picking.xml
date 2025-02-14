@@ -23,6 +23,9 @@
                 <field name="price_total"
                        string="Tax incl."
                        />
+
+                    <field name="pricelist_item"/>
+
             </xpath>
             <xpath expr="//page[@name='operations']" position="inside">
                 <group name="note_group" col="6" class="mt-2 mt-md-0">

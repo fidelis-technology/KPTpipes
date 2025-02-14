@@ -176,7 +176,8 @@
                                                     <span t-esc="amount_by_group['tax_group_name']"/>
                                                     <span t-if="not amount_by_group['hide_base_amount']"
                                                           class="text-nowrap">on
-                                                        <t t-esc="amount_by_group['formatted_tax_group_base_amount']"/>
+                                                        <t t-esc="round((amount_by_group['tax_group_amount'] / amount_by_group['tax_group_base_amount']) * 100)"/>
+                                                        %
                                                     </span>
                                                 </td>
                                                 <td class="text-end o_price_total">
@@ -220,7 +221,7 @@
                     </div>
                 </div>
             </div>
-            <span style="right:2%; position:absolute;">E. &amp; O.E</span>
+            <div style="text-align: right; white-space: nowrap;margin-top:10px">E. &amp; O.E</div>
             <div class="oe_structure"></div>
             <div style="margin-top:7%;">
                 <p>Amount Chargeable (in words)</p>

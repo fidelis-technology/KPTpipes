@@ -49,6 +49,18 @@
         <div class="article" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
           <t t-out="0"/>
         </div>
+       <div class="footer" style="width: 100%; text-align: center; display: flex; justify-content: space-between; padding: 0 20px;">
+    <p style="font-size: 12px; color: black; margin: 0;">
+        This is a computer-generated document
+    </p>
+    <p style="font-size: 12px; color: black; margin: 0;">
+        Continued...
+    </p>
+    <div class="page-break" style="page-break-before: always;"></div>
+</div>
+
+
+
     </template>
 
     <template id="report_saleorder_quotation_document1">
@@ -95,6 +107,7 @@
                     </td>
                 </tr>
             </table>
+
         </div>
         <div class="page">
                 <!-- Products Table -->
@@ -118,7 +131,7 @@
                                 <td style="padding: 8px; text-align: center; border: 1px solid black;" ><span t-esc="sequence"/></td>
                                 <td style="padding: 8px; text-align: center; border: 1px solid black;" ><span t-esc="line.name"/></td>
                                 <td style="padding: 8px; text-align: center; border: 1px solid black;" ><span t-esc="line.product_template_id.l10n_in_hsn_code"/></td>
-                                <td style="padding: 8px; text-align: center; border: 1px solid black;" ><span t-esc=""/></td>
+                                <td style="padding: 8px; text-align: center; border: 1px solid black;" ><span t-esc="line.product_packaging_id.name"/></td>
                                 <td style="padding: 8px; text-align: center; border: 1px solid black;" ><span t-esc="line.product_uom_qty"/>&amp;nbsp;
                                     <span>PCS</span></td>
                                 <td style="padding: 8px; text-align: center; border: 1px solid black;" ><span t-esc="'{:.2f}'.format(line.price_unit * (1 - line.discount / 100))"/></td>
@@ -133,7 +146,7 @@
             <div class="clearfix" name="so_total_summary">
                 <div id="total" class="row" name="total">
                     <div t-attf-class="#{'col-6' if report_type != 'html' else 'col-sm-7 col-md-6'} ms-auto">
-                        <table class="table" style="font_weight:bold !important;    font-family: sans-serif;">
+                        <table class="table" style="font_weight:bold !important;font-family: sans-serif;">
                             <!-- Tax totals -->
                             <t t-set="tax_totals" t-value="doc.tax_totals"/>
                             <t t-foreach="tax_totals.get('subtotals')" t-as="subtotal">
@@ -162,8 +175,9 @@
                                                     <span>Output</span>
                                                     <span t-esc="amount_by_group['tax_group_name']"/>
                                                     <span t-if="not amount_by_group['hide_base_amount']"
-                                                          class="text-nowrap">on
-                                                        <t t-esc="amount_by_group['formatted_tax_group_base_amount']"/>
+                                                          class="text-nowrap">@
+                                                        <t t-esc="round((amount_by_group['tax_group_amount'] / amount_by_group['tax_group_base_amount']) * 100)"/>
+                                                        %
                                                     </span>
                                                 </td>
                                                 <td class="text-end o_price_total">
@@ -207,12 +221,13 @@
                     </div>
                 </div>
             </div>
-            <span style="right:2%; position:absolute;">E. &amp; O.E</span>
+            <div style="text-align: right; white-space: nowrap;margin-top:10px">E. &amp; O.E</div>
             <div class="oe_structure"></div>
             <div style="margin-top:7%;">
                 <p>Amount Chargeable (in words)</p>
                 <p class="fw-bold" style="font_weight:600 !important;font-family: sans-serif !important; "><t t-esc="doc.currency_id.amount_to_text(doc.amount_total)"/></p>
             </div>
+
 
             <table style="width: 100%; border-collapse: collapse;margin:1% 0%;">
                 <tr>
@@ -248,6 +263,7 @@
                 </tr>
 
             </table>
+
 
             <div class="oe_structure"/>
         </div>

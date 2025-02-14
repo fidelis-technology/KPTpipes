@@ -1,3 +1,5 @@
+from setuptools.unicode_utils import filesys_decode
+
 from odoo import models, fields, api
 
 
@@ -8,9 +10,9 @@ class StockPicking(models.Model):
     amount_tax = fields.Monetary(string="Taxes", store=True, compute='_compute_amounts')
     amount_total = fields.Monetary(string="Total", store=True, compute='_compute_amounts', tracking=4)
     currency_id = fields.Many2one(
-        comodel_name='res.currency',
         compute='_compute_currency_id',
         store=True,
+        comodel_name='res.currency',
         ondelete='restrict'
     )
     tax_totals = fields.Binary(compute='_compute_tax_totals', exportable=False)
@@ -28,6 +30,69 @@ class StockPicking(models.Model):
         store=True,
         help="Difference between the rounded price total and the original price total."
     )
+
+
+    # # Below Fields are extra fields to compute
+    # sgst_per  = fields.Char("")
+    # sgst_amount = fields.Float(string="SGST", compute='action_compute_tax_amount', digits=(16, 2))
+    # cgst_amount = fields.Float(string="CGST", compute='action_compute_tax_amount', digits=(16, 2))
+    # igst_amount = fields.Float(string="IGST", compute='action_compute_tax_amount', digits=(16, 2))
+    # cess_amt = fields.Float(string="CESS", compute='action_compute_tax_amount', digits=(16, 2))
+    # cess_non = fields.Float(string="CESS_NON_ADVOL", compute='action_compute_tax_amount', digits=(16, 2))
+    # other_amt = fields.Float(string='Others', compute='action_compute_tax_amount', digits=(16, 2))
+    # amount_total_vals = fields.Float(string='amount_total_vals', store=True, compute='compute_total_vals',
+    #                                  digits=(16, 2))
+    # amount_untaxed_vals = fields.Float(string='amount_untaxed_vals', store=True, compute='compute_total_vals',
+    #                                    digits=(16, 2))
+    #
+    # @api.depends('move_ids_without_package.tax_id', 'move_ids_without_package.price_unit', 'amount_total', 'amount_untaxed',
+    #              'currency_id')
+    # def action_compute_tax_amount(self):
+    #     for picking in self:
+    #         tax_details = {
+    #             'SGST': 0.0,
+    #             'CGST': 0.0,
+    #             'IGST': 0.0,
+    #             'CESS': 0.0,
+    #             'CESS_NON_ADVOL': 0.0,
+    #             'Others': 0.0
+    #         }
+    #         for line in picking.move_ids_without_package:
+    #             tax_lines = line.tax_ids.compute_all(line.price_unit * line.quantity, currency=line.currency_id,
+    #                                                  partner=line.partner_id)['taxes']
+    #
+    #             for tax_line in tax_lines:
+    #                 tax_id = tax_line.get('id')
+    #                 tax_amount = tax_line.get('amount', 0.0)
+    #                 tax = self.env['account.tax'].browse(tax_id)
+    #                 if tax and tax.name:
+    #                     if 'SGST' in tax.name:
+    #                         tax_details['SGST'] += tax_amount
+    #                     elif 'CGST' in tax.name:
+    #                         tax_details['CGST'] += tax_amount
+    #                     elif 'IGST' in tax.name:
+    #                         tax_details['IGST'] += tax_amount
+    #                     elif 'CESS' in tax.name:
+    #                         if tax.amount_type != "percent":
+    #                             tax_details['CESS_NON_ADVOL'] += tax_amount
+    #                         else:
+    #                             tax_details['CESS'] += tax_amount
+    #                     else:
+    #                         tax_details['Others'] += tax_amount
+    #         picking.update({
+    #             'sgst_amount': tax_details['SGST'],
+    #             'cgst_amount': tax_details['CGST'],
+    #             'igst_amount': tax_details['IGST'],
+    #             'cess_amt': tax_details['CESS'],
+    #             'cess_non': tax_details['CESS_NON_ADVOL'],
+    #             'other_amt': tax_details['Others'],
+    #         })
+    #
+    # @api.depends('amount_total', 'amount_untaxed')
+    # def compute_total_vals(self):
+    #     for rec in self:
+    #         rec.amount_total_vals = rec.amount_total
+    #         rec.amount_untaxed_vals = rec.amount_untaxed
 
     @api.depends('amount_total')
     def _compute_price_total_rounded(self):
