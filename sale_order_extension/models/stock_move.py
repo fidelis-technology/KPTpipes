@@ -123,8 +123,8 @@ class StockMove(models.Model):
                 move.price_unit = move.sale_line_id.price_unit
                 move.tax_id = move.sale_line_id.tax_id
                 move.discount = move.sale_line_id.discount
-            if move.purchase_line_id:
-                move.price_unit = move.purchase_line_id.price_unit
-                move.tax_id = move.purchase_line_id.taxes_id
-                move.discount = move.purchase_line_id.discount
+            # if move.purchase_line_id:
+            #     move.price_unit = move.purchase_line_id.price_unit
+            #     move.tax_id = move.purchase_line_id.taxes_id
+            #     move.discount = move.purchase_line_id.discount
         return res
