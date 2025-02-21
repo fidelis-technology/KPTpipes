@@ -13,14 +13,18 @@
                             <field name="annual_salary" />
                             <field name="other_income" />
                             <field name="gross_income" />
+                            <field name="gross_qualify_income" string="Gross Qualify Amt"/>
                             <field name="total_deductions" />
-                            <field name="taxable_amount" />
-                            <field name="tax_payable" readonly="1" force_save="1" />
+                            <field name="taxable_amount" string="Net Income"/>
+
                         </group>
                         <group>
                             <field name="tax_regime" />
-                            <field name="tax_regime_slab" domain="[('tax_regime', '=', tax_regime)]" readonly="1" force_save="1" options="{'no_create': True, 'no_open': True}" />
-                            <field name="tds_deduction_month" readonly="1" force_save="1"/>
+<!--                            <field name="tax_regime_slab" domain="[('tax_regime', '=', tax_regime)]" readonly="1" force_save="1" options="{'no_create': True, 'no_open': True}" />-->
+                            <field name="tax_payable" readonly="1" force_save="1" string="Tax Payable"/>
+                            <field name="tax_payable_cess" readonly="1" force_save="1" string="Tax Payable with CESS(4%)"/>
+                            <field name="tds_deduction_month" readonly="1" force_save="1" string="TDS Per Month"/>
+                            <field name="tds_deduction_month_cess" readonly="1" force_save="1" string="TDS Per Month with CESS (4%)"/>
                         </group>
                         <field name="deduction_ids">
                             <tree editable="top">
@@ -29,6 +33,18 @@
                             </tree>
                         </field>
                     </group>
+                </page>
+                <page string="TDS History" name="tds_history">
+
+                    <field name="tds_history_ids">
+                        <tree>
+                                <field name="employer_name" />
+                                <field name="month" />
+                                <field name="year" />
+                                <field name="employer_tds" />
+
+                        </tree>
+                    </field>
                 </page>
             </xpath>
         </field>
