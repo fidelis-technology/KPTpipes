@@ -41,10 +41,10 @@ class StockMove(models.Model):
 
 
 
-    @api.onchange('pricelist_item', 'product_uom_qty')
+    @api.onchange('pricelist_item')
     def _onchange_pricelist_item(self):
         if self.pricelist_item:
-            self.price_unit = self.product_uom_qty * self.pricelist_item.fixed_price
+            self.price_unit = self.pricelist_item.fixed_price
 
 
 
@@ -120,11 +120,7 @@ class StockMove(models.Model):
         res = super().create(vals_list)
         for move in res:
             if move.sale_line_id:
-                move.price_unit = move.sale_line_id.price_unit
-                move.tax_id = move.sale_line_id.tax_id
-                move.discount = move.sale_line_id.discount
-            # if move.purchase_line_id:
-            #     move.price_unit = move.purchase_line_id.price_unit
-            #     move.tax_id = move.purchase_line_id.taxes_id
-            #     move.discount = move.purchase_line_id.discount
+                move.write({'price_unit':  move.sale_line_id.price_unit, 'tax_id': move.sale_line_id.tax_id, 'discount': move.sale_line_id.discount, 'pricelist_item': move.sale_line_id.pricelist_item})
+            if move.purchase_line_id:
+                move.write({'price_unit': move.purchase_line_id.price_unit, 'tax_id': move.purchase_line_id.taxes_id, 'discount': move.purchase_line_id.discount})
         return res

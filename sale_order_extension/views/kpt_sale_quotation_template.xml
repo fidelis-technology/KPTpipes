@@ -53,9 +53,6 @@
     <p style="font-size: 12px; color: black; margin: 0;">
         This is a computer-generated document
     </p>
-    <p style="font-size: 12px; color: black; margin: 0;">
-        Continued...
-    </p>
     <div class="page-break" style="page-break-before: always;"></div>
 </div>
 
@@ -88,7 +85,7 @@
                 <tr>
                     <!-- Party Name Section -->
                     <td style="width: 50%; border: 1px solid black; padding: 1%;">
-                        <div class="fw-bold" style="font_weight:600 !important;font-family: sans-serif !important; text-decoration: underline; margin-bottom:3%;" >Consignee Name</div>
+                        <div class="fw-bold" style="font_weight:600 !important;font-family: sans-serif !important; text-decoration: underline; margin-bottom:3%;" >Party Name</div>
                         <div t-field="doc.partner_invoice_id.name" class="fw-bold" style="font_weight:600 !important;font-family: sans-serif !important;" ></div>
                         <div t-field="doc.partner_invoice_id"
                         t-options='{"widget": "contact", "fields": ["address", "phone","email"], "no_marker": True, "phone_icons": True}'/>
@@ -120,7 +117,7 @@
                             <th style="padding: 8px; border: 1px solid black;" >Packs</th>
                             <th style="padding: 8px; border: 1px solid black;" >Quantity</th>
                             <th style="padding: 8px; border: 1px solid black;" >Rate</th>
-                            <th style="padding: 8px; border: 1px solid black;" >Unit</th>
+                            <th style="padding: 8px; border: 1px solid black;" >Per</th>
                             <th style="padding: 8px; border: 1px solid black;" >Amount</th>
                         </tr>
                     </thead>
@@ -230,6 +227,12 @@
 
 
             <table style="width: 100%; border-collapse: collapse;margin:1% 0%;">
+                <style>
+                        p {
+                            margin: 0;
+                            padding: 0;
+                        }
+                </style>
                 <tr>
                     <td style="width: 50%;">
                         <p>Company's PAN: <span class="fw-bold" style="font_weight:600 !important;font-family: sans-serif !important; " t-esc="doc.company_id.partner_id.l10n_in_pan" /></p>
@@ -281,7 +284,7 @@
 
 
     <record id="action_report_sale_quotation" model="ir.actions.report">
-            <field name="name">Send Quotation New</field>
+            <field name="name">KPT Quotation / Order</field>
             <field name="model">sale.order</field>
             <field name="report_type">qweb-pdf</field>
             <field name="report_name">sale_order_extension.report_saleorder_quotation</field>
@@ -290,6 +293,7 @@
             <field name="binding_model_id" ref="model_sale_order"/>
             <field name="binding_type">report</field>
         </record>
+
 
 
     <record id="email_template_edi_sale_quotation" model="mail.template">

@@ -62,6 +62,13 @@
         <div class="article" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
           <t t-out="0"/>
         </div>
+               <div class="footer" style="width: 100%; text-align: center; display: flex; justify-content: space-between; padding: 0 20px;">
+    <p style="font-size: 20px; color: black; margin: 0;">
+        This is a computer-generated document
+    </p>
+
+    <div class="page-break" style="page-break-before: always;"></div>
+               </div>
     </template>
 
     <template id="report_saleorder_document1">
@@ -89,7 +96,7 @@
                 <tr>
                     <!-- Party Name Section -->
                     <td style="width: 50%; border: 1px solid black; padding: 1%;">
-                        <div class="fw-bold" style="font_weight:600 !important;font-family: sans-serif !important; text-decoration: underline; margin-bottom:3%;" >Consignee Name</div>
+                        <div class="fw-bold" style="font_weight:600 !important;font-family: sans-serif !important; text-decoration: underline; margin-bottom:3%;" >Party Name</div>
                         <div t-field="doc.partner_invoice_id.name" class="fw-bold" style="font_weight:600 !important;font-family: sans-serif !important;" ></div>
                         <div t-field="doc.partner_invoice_id"
                         t-options='{"widget": "contact", "fields": ["address", "phone","email"], "no_marker": True, "phone_icons": True}'/>
@@ -120,7 +127,7 @@
                             <th style="padding: 8px; border: 1px solid black;" >Packs</th>
                             <th style="padding: 8px; border: 1px solid black;" >Quantity</th>
                             <th style="padding: 8px; border: 1px solid black;" >Rate</th>
-                            <th style="padding: 8px; border: 1px solid black;" >Unit</th>
+                            <th style="padding: 8px; border: 1px solid black;" >Per</th>
                             <th style="padding: 8px; border: 1px solid black;" >Amount</th>
                         </tr>
                     </thead>
@@ -131,7 +138,7 @@
                                 <td style="padding: 8px; text-align: center; border: 1px solid black;" ><span t-esc="sequence"/></td>
                                 <td style="padding: 8px; text-align: center; border: 1px solid black;" ><span t-esc="line.name"/></td>
                                 <td style="padding: 8px; text-align: center; border: 1px solid black;" ><span t-esc="line.product_template_id.l10n_in_hsn_code"/></td>
-                                <td style="padding: 8px; text-align: center; border: 1px solid black;" ><span t-esc=""/></td>
+                                <td style="padding: 8px; text-align: center; border: 1px solid black;" ><span t-esc="line.product_packaging_id.name"/></td>
                                 <td style="padding: 8px; text-align: center; border: 1px solid black;" ><span t-esc="line.product_uom_qty"/>&amp;nbsp;
                                     <span>PCS</span></td>
                                 <td style="padding: 8px; text-align: center; border: 1px solid black;" ><span t-esc="'{:.2f}'.format(line.price_unit * (1 - line.discount / 100))"/></td>
@@ -229,6 +236,12 @@
             </div>
 
             <table style="width: 100%; border-collapse: collapse;margin:1% 0%;">
+                                    <style>
+                        p {
+                        margin: 0;
+                        padding: 0;
+                        }
+                    </style>
                 <tr>
                     <td style="width: 50%;">
                         <p>Company's PAN: <span class="fw-bold" style="font_weight:600 !important;font-family: sans-serif !important; " t-esc="doc.company_id.partner_id.l10n_in_pan" /></p>
@@ -281,7 +294,7 @@
 
 
     <record id="action_report_pro_forma_invoice" model="ir.actions.report">
-            <field name="name">PRO-FORMA Invoices</field>
+            <field name="name">KPT PRO-FORMA Invoice</field>
             <field name="model">sale.order</field>
             <field name="report_type">qweb-pdf</field>
             <field name="report_name">sale_order_extension.report_saleorder_pro_forma</field>
@@ -293,8 +306,9 @@
         </record>
 
 
+
     <record id="email_template_edi_sale" model="mail.template">
-            <field name="name">Sales: PRO-FORMA Invoice</field>
+            <field name="name">KPT Sales: PRO-FORMA Invoice</field>
             <field name="model_id" ref="sale.model_sale_order"/>
             <field name="subject">{{ object.company_id.name }} {{ object.state in ('draft', 'sent') and (ctx.get('proforma') and 'Proforma' or 'Quotation') or 'Order' }} (Ref {{ object.name or 'n/a' }})</field>
             <field name="email_from">{{ (object.user_id.email_formatted or object.company_id.email_formatted or user.email_formatted) }}</field>
