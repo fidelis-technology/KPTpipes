@@ -51,9 +51,9 @@
             <xpath expr="//header/button[@name='%(stock.act_stock_return_picking)d']" position="attributes">
                     <attribute name="invisible">1</attribute>
             </xpath>
-            <xpath expr="//header/button[@name='action_l10n_in_ewaybill_create']" position="attributes">
-                <attribute name="invisible">1</attribute>
-            </xpath>
+<!--            <xpath expr="//header/button[@name='action_l10n_in_ewaybill_create']" position="attributes">-->
+<!--                <attribute name="invisible">1</attribute>-->
+<!--            </xpath>-->
 
         </field>
     </record>
