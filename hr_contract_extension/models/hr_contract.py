@@ -7,7 +7,6 @@ class HrContract(models.Model):
     _description = 'Employee Contract'
 
     annual_salary = fields.Float(string='Annual Income')
-    tax_regime = fields.Selection([('old_regime', 'Old Tax Regime'), ('new_regime', 'New Tax Regime'), ('other_regime', 'Other Tax Regime')], string='Regime')
     other_income = fields.Float(string='Other Income')
     gross_income = fields.Float(string='Gross Income',  compute='_compute_tax_slab', store=True)
     gross_qualify_income = fields.Float(string='Gross Qualify Amt',  store=True)
@@ -24,7 +23,7 @@ class HrContract(models.Model):
 
 
 
-    @api.depends('annual_salary', 'other_income', 'deduction_ids.deduction_amt', 'tax_regime', 'gross_qualify_income')
+    @api.depends('annual_salary', 'other_income', 'deduction_ids.deduction_amt', 'tax_regime_slab', 'gross_qualify_income')
     def _compute_tax_slab(self):
         for contract in self:
 
@@ -39,7 +38,7 @@ class HrContract(models.Model):
 
 
 
-    @api.onchange('annual_salary', 'other_income', 'taxable_amount', 'tax_regime')
+    @api.onchange('annual_salary', 'other_income', 'taxable_amount', 'tax_regime_slab')
     def _onchange_annual_salary(self):
         # for contract in self:
         #     total_salary = contract.annual_salary + contract.other_income
@@ -51,14 +50,14 @@ class HrContract(models.Model):
         #             break
 
         for contract in self:
-            if not contract.tax_regime or not contract.annual_salary:
+            if not contract.tax_regime_slab or not contract.annual_salary:
                 contract.tax_payable = 0
                 contract.tds_deduction_month = 0
                 continue
 
             annual_income = contract.taxable_amount
             total_tax = 0
-            slabs = self.env['tax.slab'].sudo().search([('tax_regime', '=', contract.tax_regime)])
+            slabs = contract.tax_regime_slab.tax_regime_line_ids
 
             # if contract.tax_regime == 'new_regime' and annual_income <= 700000:
             #     contract.computed_tax = 0  # Rebate under New Regime

@@ -13,6 +13,7 @@
         'security/ir.model.access.csv',
         'views/tax_slab.xml',
         'views/hr_contract.xml',
+        'views/res_company.xml',
     ],
     'installable': True,
     'license': 'OEEL-1',

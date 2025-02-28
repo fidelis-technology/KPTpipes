@@ -129,11 +129,11 @@
                                 <td style="padding: 8px; text-align: center; border: 1px solid black;" ><span t-esc="line.name"/></td>
                                 <td style="padding: 8px; text-align: center; border: 1px solid black;" ><span t-esc="line.product_template_id.l10n_in_hsn_code"/></td>
                                 <td style="padding: 8px; text-align: center; border: 1px solid black;" ><span t-esc="line.product_packaging_id.name"/></td>
-                                <td style="padding: 8px; text-align: center; border: 1px solid black;" ><span t-esc="line.product_uom_qty"/>&amp;nbsp;
+                                <td style="padding: 8px; text-align: center; border: 1px solid black;" ><span t-esc="'{:.2f}'.format(line.product_uom_qty)"/>&amp;nbsp;
                                     <span>PCS</span></td>
                                 <td style="padding: 8px; text-align: center; border: 1px solid black;" ><span t-esc="'{:.2f}'.format(line.price_unit * (1 - line.discount / 100))"/></td>
                                 <td style="padding: 8px; text-align: center; border: 1px solid black;" ><span t-esc="line.product_uom.name"/></td>
-                                <td style="padding: 8px; text-align: center; border: 1px solid black;" ><span t-esc="line.price_subtotal"/></td>
+                                <td style="padding: 8px; text-align: center; border: 1px solid black;" ><span t-esc="'{:.2f}'.format(line.price_subtotal)"/></td>
                             </tr>
                             <t t-set="sequence" t-value="sequence + 1"/>
                         </t>
@@ -149,7 +149,7 @@
                             <t t-foreach="tax_totals.get('subtotals')" t-as="subtotal">
                                     <tr class="border-black o_subtotal">
                                         <td>
-                                            <strong t-out="subtotal['name']">Untaxed Amount</strong>
+                                            <strong>Basic Amount</strong>
                                         </td>
 
                                         <td class="text-end">
@@ -211,7 +211,7 @@
                                         <strong>Total</strong>
                                     </td>
                                     <td class="text-end">
-                                        <span t-out="doc.amount_total_rounded">31.05</span>
+                                        <span t-out="'{:.2f}'.format(doc.amount_total_rounded)">31.05</span>
                                     </td>
                                 </tr>
                         </table>
@@ -222,7 +222,7 @@
             <div class="oe_structure"></div>
             <div style="margin-top:7%;">
                 <p>Amount Chargeable (in words)</p>
-                <p class="fw-bold" style="font_weight:600 !important;font-family: sans-serif !important; "><t t-esc="doc.currency_id.amount_to_text(doc.amount_total)"/></p>
+                <p class="fw-bold" style="font_weight:600 !important;font-family: sans-serif !important; "><t t-esc="doc.currency_id.amount_to_text(doc.amount_total_rounded)"/></p>
             </div>
 
 

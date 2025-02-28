@@ -357,6 +357,8 @@
                 </tr>
             </table>
 
+                                            <t t-set="hsn_displayed" t-value="[]"/>
+                            <t t-set="total_tax_group_amount" t-value="0"/>
                 <t t-if="doc.move_ids_without_package.mapped('tax_id')">
 
                     <table class="table table-sm break-inside-avoid" border="1" style="width: 100%; border-collapse: collapse;">
@@ -399,8 +401,7 @@
                         <tbody>
 
                             <!-- Initialize a variable to track the last HSN Code -->
-                            <t t-set="hsn_displayed" t-value="[]"/>
-                            <t t-set="total_tax_group_amount" t-value="0"/>
+
 
                             <!-- Loop through all One2many records -->
                             <t t-foreach="doc.move_ids_without_package.filtered(lambda l: l.product_id.l10n_in_hsn_code).sorted(lambda l: l.product_id.l10n_in_hsn_code)"
@@ -478,13 +479,31 @@
 
 
                 <table class="table table-sm" style="width: 100%; border-color:transparent">
-                    <style>
-                        p {
+                        <style>
+                                                                              p {
                         margin: 0;
                         padding: 0;
                         }
-                    </style>
-                                    <tr>
+                            .table > :not(:first-child) {
+    border-top: transparent;
+
+}
+                            .table-sm > :not(caption) > * > * {
+                            padding: 2px;
+                            margin: 0px;
+                            }
+                                .break-inside-avoid {
+                                break-inside: avoid;
+                                page-break-inside: avoid;
+                            }
+                            .page-break-before-avoid {
+                                page-break-before: avoid;
+                            }
+                            .page-break-after-avoid {
+                                page-break-after: avoid;
+                            }
+                        </style>
+                                    <tr class="page-break-before-avoid">
                     <td style="col-6 text-align: left; white-space: nowrap;">Tax Amount (in words)<span class="fw-bold">
                                                                                     : INR
                         <t t-esc="doc.currency_id.amount_to_text(total_tax_group_amount)"/>
@@ -497,8 +516,8 @@
 <!--                        <t t-esc="doc.currency_id.amount_to_text(total_tax_group_amount)"/>-->
 <!--                    </td>-->
 <!--                </tr>-->
-                    <tr>
-                        <td >
+                    <tr class="page-break-before-avoid">
+                        <td style="width:20%">
                             <p>Remarks: <span t-esc="doc.note"/></p>
                             <p>Company's PAN:
                                 <span class="fw-bold"
@@ -507,7 +526,43 @@
                             </p>
 
                         </td>
-                    <td style="width:50%" >
+                    <td style="width:80%" >
+<!--                            <td style="width:50%">-->
+<!--        <table style="width:100%;">-->
+<!--            <tr>-->
+<!--                <td class="text-center" style="font-weight: bold;">Company's Bank Details</td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <td>A/c Holder's Name:-->
+<!--                    <span class="fw-bold" t-if="doc.company_id.partner_id.bank_ids"-->
+<!--                          t-esc="doc.company_id.partner_id.bank_ids[0].acc_holder_name"/>-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <td>Bank Name:-->
+<!--                    <span class="fw-bold" t-if="doc.company_id.partner_id.bank_ids and doc.company_id.partner_id.bank_ids[0].bank_id"-->
+<!--                          t-esc="doc.company_id.partner_id.bank_ids[0].bank_id.name"/>-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <td>A/c No.:-->
+<!--                    <span class="fw-bold" t-if="doc.company_id.partner_id.bank_ids"-->
+<!--                          t-esc="doc.company_id.partner_id.bank_ids[0].acc_number"/>-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <td>Branch &amp; IFS Code:-->
+<!--                    <span class="fw-bold" t-if="doc.company_id.partner_id.bank_ids"-->
+<!--                          t-esc="doc.company_id.partner_id.bank_ids[0].ifsc_code"/>-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <td>SWIFT Code:-->
+<!--                    <span class="fw-bold" t-if="doc.company_id.partner_id.bank_ids"-->
+<!--                          t-esc="doc.company_id.partner_id.bank_ids[0].swift_code"/>-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--        </table>/-->
                         <p class="text-center" style="font-weight: bold;">Company's Bank Details</p>
                         <p>A/c Holder's Name : <span class="fw-bold" style="font_weight:600 !important;font-family: sans-serif !important; " t-if="doc.company_id.partner_id.bank_ids" t-esc="doc.company_id.partner_id.bank_ids[0].acc_holder_name"/></p>
                         <p>Bank Name : <span class="fw-bold" style="font_weight:600 !important;font-family: sans-serif !important; " t-if="doc.company_id.partner_id.bank_ids and doc.company_id.partner_id.bank_ids[0].bank_id" t-esc="doc.company_id.partner_id.bank_ids[0].bank_id.name"/></p>
@@ -517,15 +572,17 @@
                     </td>
 
                     </tr>
-                    <tr>
+                    <tr class="page-break-before-avoid">
                         <td>
-                            <p>Recd. in Good Condition
+                            <p style="padding: 30px 0px;">Recd. in Good Condition
                             </p>
                         </td>
                         <td>
-                            <p  class="text-end" style="font-weight: bold;right:0;">for KPT Piping System Pvt. Ltd.</p>
+                            <p  class="text-end" style="font-weight: bold;right:0;padding: 30px 0px;">for KPT Piping System Pvt. Ltd.</p>
                         </td>
                     </tr>
+<!--                    <tr><td></td><td></td></tr>-->
+                    <tr class="page-break-before-avoid"><td></td><td><p class="text-end" style="padding-top: 30px;">Authorised Signatory</p></td></tr>
                 </table>
 
             </div>

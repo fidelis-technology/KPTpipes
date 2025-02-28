@@ -1,5 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
+
+      <!-- Form View for Tax Slabs -->
+    <record id="tax_slab_view_form" model="ir.ui.view">
+        <field name="name">tax.slab.view.form</field>
+        <field name="model">tax.slab</field>
+        <field name="arch" type="xml">
+            <form>
+
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" string="Regime"/>
+                        <h1>
+                            <field name="name" placeholder="Old Tax Regime"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="date_start" />
+                        </group>
+                        <group>
+                            <field name="date_end"/>
+                            <field name="financial_year_name" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Tax Slab" name="tax_slab_lines">
+                            <field name="tax_regime_line_ids">
+                                <tree string="Tax Slabs" editable="bottom" default_order="tax_regime_amt_from">
+                                    <field name="tax_regime_description"/>
+                                    <field name="tax_regime_amt_from"/>
+                                    <field name="tax_regime_amt_to"/>
+                                    <field name="tax_regime_per"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
     <!-- Action for Tax Slab -->
     <record id="action_tax_slab" model="ir.actions.act_window">
         <field name="name">Tax Slabs</field>
@@ -13,12 +55,11 @@
         <field name="name">tax.slab.tree</field>
         <field name="model">tax.slab</field>
         <field name="arch" type="xml">
-            <tree string="Tax Slabs" editable="top">
-                <field name="tax_regime"/>
-                <field name="tax_regime_description"/>
-                <field name="tax_regime_per"/>
-                <field name="tax_regime_amt_from"/>
-                <field name="tax_regime_amt_to"/>
+            <tree string="Tax Slabs" >
+                <field name="name"/>
+                <field name="financial_year_name" force_save="1"/>
+                <field name="date_start"/>
+                <field name="date_end"/>
             </tree>
         </field>
     </record>
