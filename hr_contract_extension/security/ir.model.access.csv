@@ -3,3 +3,6 @@ access_tax_slab,tax.slab,model_tax_slab,base.group_user,1,1,1,1
 access_tax_slab_line,tax.slab.line,model_tax_slab_line,base.group_user,1,1,1,1
 access_deduction_description,deduction.description,model_deduction_description,base.group_user,1,1,1,1
 access_tds_history,tds.history,model_tds_history,,1,1,1,1
+access_tds_section,tds.section,model_tds_section,,1,1,1,1
+access_tds_section_scheme,tds.section.scheme,model_tds_section_scheme,,1,1,1,1
+access_month_wise_tds,month.wise.tds,model_month_wise_tds,,1,1,1,1

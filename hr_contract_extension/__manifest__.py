@@ -14,6 +14,7 @@
         'views/tax_slab.xml',
         'views/hr_contract.xml',
         'views/res_company.xml',
+        'views/tax_scheme.xml',
     ],
     'installable': True,
     'license': 'OEEL-1',

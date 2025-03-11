@@ -10,18 +10,18 @@
 
                 <sheet>
                     <div class="oe_title">
-                        <label for="name" string="Regime"/>
                         <h1>
-                            <field name="name" placeholder="Old Tax Regime"/>
+                            <field name="name" placeholder="New Tax Regime u/s 115BAC" nolabel="1"/>
                         </h1>
                     </div>
                     <group>
                         <group>
                             <field name="date_start" />
+                            <field name="date_end"/>
                         </group>
                         <group>
-                            <field name="date_end"/>
                             <field name="financial_year_name" invisible="1"/>
+                            <field name="age_classification" />
                         </group>
                     </group>
                     <notebook>
@@ -32,6 +32,7 @@
                                     <field name="tax_regime_amt_from"/>
                                     <field name="tax_regime_amt_to"/>
                                     <field name="tax_regime_per"/>
+                                    <field name="surcharge"/>
                                 </tree>
                             </field>
                         </page>

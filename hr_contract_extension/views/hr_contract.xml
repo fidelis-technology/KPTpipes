@@ -11,11 +11,13 @@
                     <group>
                         <group>
                             <field name="annual_salary" />
-                            <field name="other_income" />
-                            <field name="gross_income" />
-                            <field name="gross_qualify_income" string="Gross Qualify Amt"/>
+<!--                            <field name="other_income" />-->
+<!--                            <field name="gross_income" />-->
+<!--                            <field name="gross_qualify_income" string="Gross Qualify Amt"/>-->
                             <field name="total_deductions" />
                             <field name="taxable_amount" string="Net Income"/>
+                            <field name="tds_deduction_month" readonly="1" force_save="1" string="TDS Per Month"/>
+                            <field name="tds_deduction_month_cess" readonly="1" force_save="1" string="TDS Per Month with CESS (4%)"/>
 
                         </group>
                         <group>
@@ -23,16 +25,76 @@
 <!--                            <field name="tax_regime_slab" domain="[('tax_regime', '=', tax_regime)]" readonly="1" force_save="1" options="{'no_create': True, 'no_open': True}" />-->
                             <field name="tax_payable" readonly="1" force_save="1" string="Tax Payable"/>
                             <field name="tax_payable_cess" readonly="1" force_save="1" string="Tax Payable with CESS(4%)"/>
-                            <field name="tds_deduction_month" readonly="1" force_save="1" string="TDS Per Month"/>
-                            <field name="tds_deduction_month_cess" readonly="1" force_save="1" string="TDS Per Month with CESS (4%)"/>
+                                                            <field name="prepaid_tds" />
+                                <field name="tax_pay_ref" readonly="1" force_save="1"/>
+
                         </group>
                         <field name="deduction_ids">
-                            <tree editable="top">
-                                <field name="name" />
-                                <field name="deduction_amt"  />
+                            <tree editable="bottom">
+                                <field name="section_id" />
+                                <field name="scheme_id"  domain="[('section_id', '=', section_id)]"/>
+                                <field name="scheme_details" />
+                                <field name="max_limit_deduction" string="Max Limit Amt / per (%)"/>
+                                <field name="deduction_amt" />
+
                             </tree>
                         </field>
+
                     </group>
+                    <group>
+
+                        <group>
+                            <style>
+                                .deduction-summary {
+                                font-family: Arial, sans-serif;
+                                font-size: 14px;
+                                margin-top: 15px;
+                                }
+
+                                .section {
+                                margin-bottom: 10px; /* Reduce space between sections */
+                                }
+
+                                .scheme {
+                                display: flex;
+                                justify-content: space-between;
+                                padding-left: 10px;
+                                margin-bottom: 2px; /* Reduce space between items */
+                                }
+
+                                .max-limit {
+                                display: flex;
+                                justify-content: space-between;
+                                font-weight: bold;
+                                padding-left: 10px;
+                                margin-top: 5px; /* Reduce space above max limit */
+                                }
+
+                                hr {
+                                border: none;
+                                border-top: 1px solid #000;
+                                margin: 3px 0; /* Reduce space around horizontal line */
+                                }
+
+                                .amount {
+                                text-align: right;
+                                min-width: 60px; /* Adjust width to keep alignment */
+                                }
+                            </style>
+
+
+                            <field name="grouped_deductions_html" readonly="1" nolabel="1"/>
+                        </group>
+                        <group >
+                            <field name="month_ids" >
+                                <tree >
+                                    <field name="months" />
+                                    <field name="tds_month_amt" sum="Total TDS Amt"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </group>
+
                 </page>
                 <page string="TDS History" name="tds_history">
 
