@@ -1,42 +1,78 @@
-from setuptools.unicode_utils import filesys_decode
+from odoo import models, api, fields
 from collections import defaultdict
-from odoo import models, fields, api
 import itertools
+from datetime import datetime
+from odoo.exceptions import ValidationError
 
-class HrContract(models.Model):
-    _inherit = 'hr.contract'
-    _description = 'Employee Contract'
+class HrTDS(models.Model):
+    _name = 'hr.tds'
+    _description = 'HR TDS'
 
+    hr_contract_id = fields.Many2one('hr.contract', string='Contract')
+    hr_employee_id = fields.Many2one('hr.employee', string='Employee', copy=False)
     annual_salary = fields.Float(string='Annual Income')
-    other_income = fields.Float(string='Other Income')
-    gross_income = fields.Float(string='Gross Income',  compute='_compute_tax_slab', store=True)
-    gross_qualify_income = fields.Float(string='Gross Qualify Amt',  store=True)
     total_deductions = fields.Float(string='Total Deductions', compute='_compute_tax_slab', store=True)
     taxable_amount = fields.Float(string='Taxable Amount', compute='_compute_tax_slab', store=True)
     tax_payable = fields.Float(string='Tax Payable')
     tax_payable_cess = fields.Float(string='Tax Payable Cess')
-    tax_regime_slab = fields.Many2one('tax.slab', string='Tax Slab')
+    tax_regime_slab = fields.Many2one('tax.slab', string='Tax Slab', copy=False)
     tds_deduction_month = fields.Float(string='TDS Deduction Per month')
     tds_deduction_month_cess = fields.Float(string='TDS Deduction Per month Cess')
-    deduction_ids = fields.One2many('deduction.description', 'hr_contract_id')
-
-    tds_history_ids = fields.One2many('tds.history', 'hr_contract_id')
-    grouped_deductions = fields.Text(compute="_compute_grouped_deductions", string="Summary", store=False)
+    deduction_ids = fields.One2many('deduction.description', 'hr_tds_id')
     grouped_deductions_html = fields.Html(compute="_compute_grouped_deductions_html", sanitize=False, store=False)
-
     prepaid_tds = fields.Float('Prepaid TDS')
     tax_pay_ref = fields.Float('Tax Payable/Refundable')
-    month_ids = fields.One2many('month.wise.tds', 'hr_contract_id')
+    month_ids = fields.One2many('month.wise.tds', 'hr_tds_id', store=True)
+    tds_from_month = fields.Char('TDS From', compute='_compute_month_ids', store=True)
+    tds_to_month = fields.Char('TDS To', compute='_compute_month_ids', store=True)
+    is_tds_payslip = fields.Boolean(string="Appears On Payslip", default=False)
+
+    _sql_constraints = [
+        ('unique_employee_taxslab_field', 'unique(hr_employee_id, tax_regime_slab)',
+         'The combination of Employee and Tax Slab Field must be unique!')
+    ]
 
 
+    def _compute_display_name(self):
+        for rec in self:
+            rec.display_name = f"{rec.hr_employee_id.name or ''} - {rec.tax_regime_slab.display_name or ''}"
 
-    @api.onchange('month_ids')
-    def _onchange_month_ids(self):
+    @api.constrains('hr_employee_id', 'tax_regime_slab')
+    def _check_unique_employee_taxslab_field(self):
+        for record in self:
+            existing_record = self.search([
+                ('hr_employee_id', '=', record.hr_employee_id.id),
+                ('tax_regime_slab', '=', record.tax_regime_slab.id),
+                ('id', '!=', record.id)
+            ])
+            if existing_record:
+                raise ValidationError("The combination of Employee and Tax Slab Field must be unique!")
+
+    def sort_financial_year(self, month_years):
+        # Define the correct order for financial year sorting (April to March)
+        financial_order = {
+            "April": 1, "May": 2, "June": 3, "July": 4, "August": 5, "September": 6,
+            "October": 7, "November": 8, "December": 9, "January": 10, "February": 11, "March": 12
+        }
+
+        # Custom sorting key
+        def financial_key(month_year):
+            month, year = month_year.split(" ")
+            return (int(year), financial_order[month])
+
+        return sorted(month_years, key=financial_key)
+
+    @api.depends('month_ids')
+    def _compute_month_ids(self):
         for record in self:
             if record.month_ids:
                 record.write({'tds_deduction_month': round(record.tax_payable / len(record.month_ids)), 'tds_deduction_month_cess': round(record.tax_payable_cess / len(record.month_ids))})
+                month_years = sorted(record.month_ids.mapped("tds_month_year"))
+                sorted_month_years = self.sort_financial_year(month_years)
+                record.tds_from_month = sorted_month_years[0] if sorted_month_years else False
+                record.tds_to_month = sorted_month_years[-1] if sorted_month_years else False
 
-    @api.onchange("tax_payable_cess")
+    @api.onchange("tax_payable_cess", "annual_salary", "tax_regime_slab")
     def _onchange_tds_per_year(self):
         """Dynamically generate 12 months and distribute TDS per year equally."""
         for record in self:
@@ -49,35 +85,30 @@ class HrContract(models.Model):
                     ("december", "December"), ("january", "January"), ("february", "February"), ("march", "March")
                 ]
 
+                current_year = datetime.today().year
+                fiscal_start_year = current_year if datetime.today().month >= 4 else current_year - 1
+                fiscal_end_year = fiscal_start_year + 1
+
+                # Assign years based on fiscal year
+                month_years = [
+                    (month[0], f"{month[1]} {fiscal_start_year if idx < 9 else fiscal_end_year}")
+                    for idx, month in enumerate(months)
+                ]
+
                 # Clear old records and create new ones
                 record.month_ids = [(5, 0, 0)]  # Remove existing lines
-                record.month_ids = [(0, 0, {"months": month[0], "tds_month_amt": monthly_tds}) for month in months]
+                record.month_ids = [(0, 0, {"months": month, "tds_month_amt": monthly_tds, "tds_month_year": month_year})
+                                    for month, month_year in month_years]
+                record.update({'tds_from_month': month_years[0][1], 'tds_to_month': month_years[-1][1]})
             else:
                 record.month_ids = [(5, 0, 0)]
+                record.update({'tds_from_month': False, 'tds_to_month': False})
 
     @api.onchange('tax_payable_cess', 'prepaid_tds')
     def _onchange_prepaid_tds(self):
         for record in self:
             record.tax_pay_ref = record.tax_payable_cess - record.prepaid_tds
 
-    @api.depends("deduction_ids")
-    def _compute_grouped_deductions(self):
-        for record in self:
-            sections = defaultdict(list)
-            for line in record.deduction_ids:
-                sections[line.section_id.name].append((line.scheme_id.scheme_name, line.deduction_amt))
-
-            formatted_text = ""
-            for section, schemes in sections.items():
-                total = sum(amount for _, amount in schemes)
-                max_limit = 150000 if section == "80C" else 25000  # Example limits
-                formatted_text += f"Section {section}:\n"
-                for scheme, amount in schemes:
-                    formatted_text += f"    {scheme}: {amount}\n"
-                formatted_text += f"    --------------------------------------\n"
-                formatted_text += f"    Max Limit ({max_limit}): {total}\n\n"
-
-            record.grouped_deductions = formatted_text
 
     @api.depends('deduction_ids', 'deduction_ids.deduction_amt')
     def _compute_grouped_deductions_html(self):
@@ -195,53 +226,26 @@ class HrContract(models.Model):
             # contract.tds_deduction_month_cess = round(contract.tax_payable_cess / 12)
 
 
+    @api.model_create_multi
+    def create(self, vals):
+        """Automatically ensure only one True value per employee_id during creation."""
+        res = super(HrTDS, self).create(vals)
+        if res.is_tds_payslip:
+            # Set all other records' boolean_field to False for the same employee
+            self.search([
+                ('hr_employee_id', '=', res.hr_employee_id.id),
+                ('id', '!=', res.id)
+            ]).write({'is_tds_payslip': False})
+        return res
 
-
-class DeductionDescription(models.Model):
-    _name = 'deduction.description'
-    _description = 'Deduction Description'
-
-    hr_tds_id = fields.Many2one('hr.tds')
-    hr_contract_id = fields.Many2one('hr.contract')
-    name = fields.Char('Deduction Description')
-    section_id = fields.Many2one('tds.section', string='Section')
-    scheme_id = fields.Many2one('tds.section.scheme', string='Investment/Scheme')
-    scheme_details = fields.Char(related='scheme_id.scheme_details', string='Scheme Details')
-    max_limit_deduction = fields.Float(related='scheme_id.max_limit_deduction', string='Max Limit Deduction')
-    deduction_amt = fields.Float('Amount')
-
-
-class MonthWiseTDS(models.Model):
-    _name = 'month.wise.tds'
-    _description = 'Month Wise TDS'
-
-    hr_tds_id = fields.Many2one('hr.tds')
-    hr_contract_id = fields.Many2one('hr.contract')
-    months = fields.Selection([
-        ('january', 'January'),
-        ('february', 'February'),
-        ('march', 'March'),
-        ('april', 'April'),
-        ('may', 'May'),
-        ('june', 'June'),
-        ('july', 'July'),
-        ('august', 'August'),
-        ('september', 'September'),
-        ('october', 'October'),
-        ('november', 'November'),
-        ('december', 'December'),
-    ], string="Month")
-
-    tds_month_amt = fields.Float('TDS Amt')
-    tds_month_year = fields.Char('TDS Month Year')
-
-
-class TDSHistory(models.Model):
-    _name = 'tds.history'
-    _description = 'TDS History'
-
-    hr_contract_id = fields.Many2one('hr.contract')
-    employer_name = fields.Char('Employer Name')
-    month = fields.Date('month')
-    year = fields.Date('year')
-    employer_tds = fields.Float('TDS Amount')
+    def write(self, vals):
+        """Ensure only one True value per employee_id during updates."""
+        res = super(HrTDS, self).write(vals)
+        if 'is_tds_payslip' in vals and vals['is_tds_payslip']:
+            for record in self:
+                # Set all other records' boolean_field to False for the same employee
+                self.search([
+                    ('hr_employee_id', '=', record.hr_employee_id.id),
+                    ('id', '!=', record.id)
+                ]).write({'is_tds_payslip': False})
+        return res

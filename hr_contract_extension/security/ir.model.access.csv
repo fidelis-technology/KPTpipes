@@ -6,3 +6,4 @@ access_tds_history,tds.history,model_tds_history,,1,1,1,1
 access_tds_section,tds.section,model_tds_section,,1,1,1,1
 access_tds_section_scheme,tds.section.scheme,model_tds_section_scheme,,1,1,1,1
 access_month_wise_tds,month.wise.tds,model_month_wise_tds,,1,1,1,1
+access_hr_tds,hr.tds,model_hr_tds,,1,1,1,1

@@ -5,7 +5,7 @@
     'name': 'HR Contract Extension',
     'version': '1.2',
     'sequence': 31,
-    'depends': ['hr_contract', 'hr_work_entry_contract'],
+    'depends': ['hr_contract', 'hr_work_entry_contract', 'hr_payroll'],
     'description': """
         This module adds an Extension of hr contract.
     """,
@@ -15,6 +15,7 @@
         'views/hr_contract.xml',
         'views/res_company.xml',
         'views/tax_scheme.xml',
+        'views/hr_tds.xml',
     ],
     'installable': True,
     'license': 'OEEL-1',
